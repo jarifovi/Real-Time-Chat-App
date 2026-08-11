@@ -1,8 +1,8 @@
 name: real_time_chat_app
-description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+description: "Production 1-to-1 Real-Time Chat App built with Flutter & Firebase by Jarif Ovi (https://github.com/jarifovi)."
+repository: https://github.com/jarifovi/Real-Time-Chat-App
+issue_tracker: https://github.com/jarifovi/Real-Time-Chat-App/issues
+publish_to: 'none'
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43

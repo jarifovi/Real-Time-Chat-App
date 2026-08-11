@@ -169,6 +169,13 @@ class ProfileTab extends StatelessWidget {
                     title: 'App Version',
                     subtitle: 'v1.0.0 (Production Build)',
                   ),
+                  const Divider(height: 1, indent: 64, endIndent: 20),
+                  _buildProfileTile(
+                    icon: Icons.code_rounded,
+                    iconColor: const Color(0xFFEC4899),
+                    title: 'Author & Lead Maintainer',
+                    subtitle: 'Jarif Ovi (@jarifovi)',
+                  ),
                 ],
               ),
             ),
