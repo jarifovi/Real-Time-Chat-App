@@ -26,7 +26,6 @@ class AppTheme {
         primary: primaryColor,
         secondary: primaryAccent,
         surface: cardColor,
-        background: backgroundColor,
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: primaryColor,

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../models/chat_room_model.dart';
-import '../models/user_model.dart';
 import '../services/firestore_service.dart';
 
 class ChatProvider with ChangeNotifier {
