@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/user_provider.dart';
 import 'providers/chat_provider.dart';
@@ -12,7 +13,9 @@ import 'screens/main_navigation_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   } catch (e) {
     print('Firebase initialization info: $e');
   }
@@ -21,7 +24,7 @@ void main() async {
 }
 
 class RealTimeChatApp extends StatelessWidget {
-  const RealTimeChatApp({Key? key}) : super(key: key);
+  const RealTimeChatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class RealTimeChatApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key? key}) : super(key: key);
+  const AuthWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
