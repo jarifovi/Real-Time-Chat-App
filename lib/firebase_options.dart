@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
+/// Default [FirebaseOptions] for project: real-time-chat-app-eae59
 ///
-/// Replace these values with your actual project keys from Firebase Console
-/// or run `flutterfire configure` in your project root.
+/// If using Web, Android, or iOS apps, paste your web API key and App ID
+/// from your Firebase Console (Project Settings > General).
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -36,25 +36,25 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyDemoPlaceholderKeyForRealTimeChatApp',
     appId: '1:1234567890:web:abcdef1234567890',
     messagingSenderId: '1234567890',
-    projectId: 'real-time-chat-app-demo',
-    authDomain: 'real-time-chat-app-demo.firebaseapp.com',
-    storageBucket: 'real-time-chat-app-demo.appspot.com',
+    projectId: 'real-time-chat-app-eae59',
+    authDomain: 'real-time-chat-app-eae59.firebaseapp.com',
+    storageBucket: 'real-time-chat-app-eae59.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDemoPlaceholderKeyForRealTimeChatApp',
     appId: '1:1234567890:android:abcdef1234567890',
     messagingSenderId: '1234567890',
-    projectId: 'real-time-chat-app-demo',
-    storageBucket: 'real-time-chat-app-demo.appspot.com',
+    projectId: 'real-time-chat-app-eae59',
+    storageBucket: 'real-time-chat-app-eae59.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDemoPlaceholderKeyForRealTimeChatApp',
     appId: '1:1234567890:ios:abcdef1234567890',
     messagingSenderId: '1234567890',
-    projectId: 'real-time-chat-app-demo',
-    storageBucket: 'real-time-chat-app-demo.appspot.com',
+    projectId: 'real-time-chat-app-eae59',
+    storageBucket: 'real-time-chat-app-eae59.firebasestorage.app',
     iosBundleId: 'com.example.realTimeChatApp',
   );
 
@@ -62,8 +62,8 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyDemoPlaceholderKeyForRealTimeChatApp',
     appId: '1:1234567890:ios:abcdef1234567890',
     messagingSenderId: '1234567890',
-    projectId: 'real-time-chat-app-demo',
-    storageBucket: 'real-time-chat-app-demo.appspot.com',
+    projectId: 'real-time-chat-app-eae59',
+    storageBucket: 'real-time-chat-app-eae59.firebasestorage.app',
     iosBundleId: 'com.example.realTimeChatApp',
   );
 
@@ -71,8 +71,8 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyDemoPlaceholderKeyForRealTimeChatApp',
     appId: '1:1234567890:web:abcdef1234567890',
     messagingSenderId: '1234567890',
-    projectId: 'real-time-chat-app-demo',
-    authDomain: 'real-time-chat-app-demo.firebaseapp.com',
-    storageBucket: 'real-time-chat-app-demo.appspot.com',
+    projectId: 'real-time-chat-app-eae59',
+    authDomain: 'real-time-chat-app-eae59.firebaseapp.com',
+    storageBucket: 'real-time-chat-app-eae59.firebasestorage.app',
   );
 }
