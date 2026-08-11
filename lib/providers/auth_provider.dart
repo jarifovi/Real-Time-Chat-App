@@ -68,12 +68,12 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      UserCredential creds = await _authService.loginUser(
+      UserModel? user = await _authService.loginUser(
         email: email,
         password: password,
       );
-      if (creds.user != null) {
-        _currentUser = await _authService.getUserProfile(creds.user!.uid);
+      if (user != null) {
+        _currentUser = user;
       }
       _isLoading = false;
       notifyListeners();
