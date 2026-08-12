@@ -11,8 +11,6 @@ class FirestoreService {
   // Local fallback storage for demo testing
   static final List<ChatRoomModel> _localChatRooms = [];
   static final Map<String, List<MessageModel>> _localMessages = {};
-  static final StreamController<List<UserModel>> _usersStreamCtrl =
-      StreamController<List<UserModel>>.broadcast();
   static final StreamController<List<ChatRoomModel>> _chatsStreamCtrl =
       StreamController<List<ChatRoomModel>>.broadcast();
   static final Map<String, StreamController<List<MessageModel>>>
