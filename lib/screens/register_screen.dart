@@ -16,6 +16,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
@@ -23,6 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -34,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     bool success = await authProvider.register(
       name: _nameController.text.trim(),
+      username: _usernameController.text.trim(),
       email: _emailController.text.trim(),
       password: _passwordController.text,
     );
@@ -91,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Unique 3D Glowing Social Sparkle Pulse Icon
+                    // Unique 3D Social Pulse Icon
                     Container(
                       width: 96,
                       height: 96,
@@ -165,6 +168,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 18),
 
+                            // Unique Username Handle
+                            TextFormField(
+                              controller: _usernameController,
+                              style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                              decoration: InputDecoration(
+                                labelText: 'Username (@handle)',
+                                hintText: 'e.g. alex_vibe',
+                                hintStyle: GoogleFonts.plusJakartaSans(
+                                  color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                                  fontSize: 14,
+                                ),
+                                labelStyle: GoogleFonts.plusJakartaSans(
+                                  color: AppTheme.textSecondary,
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.alternate_email_rounded,
+                                  color: AppTheme.primaryColor,
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please choose a username';
+                                }
+                                if (value.trim().length < 3) {
+                                  return 'Username must be at least 3 characters';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 18),
+
                             // Email
                             TextFormField(
                               controller: _emailController,
@@ -176,7 +210,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: AppTheme.textSecondary,
                                 ),
                                 prefixIcon: const Icon(
-                                  Icons.alternate_email_rounded,
+                                  Icons.email_outlined,
                                   color: AppTheme.primaryAccent,
                                 ),
                               ),

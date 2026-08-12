@@ -157,7 +157,7 @@ class _UsersTabState extends State<UsersTab> {
                   userProvider.setSearchQuery(value);
                 },
                 decoration: InputDecoration(
-                  hintText: 'Search by name or email...',
+                  hintText: 'Search by name, @username, or email...',
                   hintStyle: GoogleFonts.plusJakartaSans(
                     color: AppTheme.textSecondary,
                     fontSize: 14,
@@ -291,20 +291,33 @@ class _UsersTabState extends State<UsersTab> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        user.name,
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            user.name,
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            user.formattedUsername,
+                                            style: GoogleFonts.plusJakartaSans(
+                                              color: AppTheme.neonPinkGlow,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
                                         user.email,
                                         style: GoogleFonts.plusJakartaSans(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 13,
+                                          fontSize: 12,
                                         ),
                                       ),
                                     ],

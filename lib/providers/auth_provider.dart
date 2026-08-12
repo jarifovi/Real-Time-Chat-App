@@ -35,6 +35,7 @@ class AuthProvider with ChangeNotifier {
     required String name,
     required String email,
     required String password,
+    String? username,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -45,6 +46,7 @@ class AuthProvider with ChangeNotifier {
         name: name,
         email: email,
         password: password,
+        username: username,
       );
       _currentUser = user;
       _isLoading = false;
@@ -74,6 +76,36 @@ class AuthProvider with ChangeNotifier {
       );
       if (user != null) {
         _currentUser = user;
+      }
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  /// Update current user profile
+  Future<bool> updateProfile({
+    required String newName,
+    required String newUsername,
+  }) async {
+    if (_currentUser == null) return false;
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      UserModel? updated = await _authService.updateUserProfile(
+        uid: _currentUser!.uid,
+        newName: newName,
+        newUsername: newUsername,
+      );
+
+      if (updated != null) {
+        _currentUser = updated;
       }
       _isLoading = false;
       notifyListeners();

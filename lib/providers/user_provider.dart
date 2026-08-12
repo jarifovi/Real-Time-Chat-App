@@ -16,9 +16,11 @@ class UserProvider with ChangeNotifier {
     if (_searchQuery.isEmpty) {
       return _users;
     }
+    final cleanQuery = _searchQuery.toLowerCase().replaceAll('@', '');
     return _users.where((user) {
-      return user.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          user.email.toLowerCase().contains(_searchQuery.toLowerCase());
+      return user.name.toLowerCase().contains(cleanQuery) ||
+          user.username.toLowerCase().contains(cleanQuery) ||
+          user.email.toLowerCase().contains(cleanQuery);
     }).toList();
   }
 

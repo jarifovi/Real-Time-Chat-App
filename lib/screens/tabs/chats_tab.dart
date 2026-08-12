@@ -46,6 +46,7 @@ class _ChatsTabState extends State<ChatsTab> {
       return UserModel(
         uid: peerUid,
         name: 'User (${peerUid.substring(0, 4)})',
+        username: 'user_${peerUid.substring(0, 4)}',
         email: '',
         createdAt: DateTime.now(),
       );

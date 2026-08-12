@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/date_formatter.dart';
+import '../../widgets/gravity_3d_card.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -16,6 +17,142 @@ class _ProfileTabState extends State<ProfileTab> {
   bool _notificationsEnabled = true;
   bool _biometricEnabled = true;
   String _disappearingTimer = 'Off';
+
+  void _showEditProfileDialog(BuildContext context, AuthProvider authProvider) {
+    final currentUser = authProvider.currentUser;
+    if (currentUser == null) return;
+
+    final nameController = TextEditingController(text: currentUser.name);
+    final usernameController = TextEditingController(text: currentUser.username);
+    final formKey = GlobalKey<FormState>();
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(28),
+          side: BorderSide(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
+        ),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.edit_rounded,
+                color: AppTheme.primaryColor,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Edit Profile',
+              style: GoogleFonts.plusJakartaSans(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+        content: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: nameController,
+                  style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: 'Display Name',
+                    labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+                    prefixIcon: const Icon(Icons.badge_rounded, color: AppTheme.primaryColor),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: usernameController,
+                  style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                  decoration: InputDecoration(
+                    labelText: 'Username (@handle)',
+                    labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+                    prefixIcon: const Icon(Icons.alternate_email_rounded, color: AppTheme.primaryAccent),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter a username';
+                    }
+                    if (value.trim().length < 3) {
+                      return 'Username must be at least 3 characters';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (!formKey.currentState!.validate()) return;
+              final messenger = ScaffoldMessenger.of(context);
+              Navigator.of(ctx).pop();
+
+              bool success = await authProvider.updateProfile(
+                newName: nameController.text.trim(),
+                newUsername: usernameController.text.trim(),
+              );
+
+              if (mounted) {
+                messenger.showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      success ? 'Profile updated successfully!' : 'Failed to update profile.',
+                      style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                    ),
+                    backgroundColor: success ? AppTheme.primaryColor : Colors.redAccent,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+            child: Text(
+              'Save Changes',
+              style: GoogleFonts.plusJakartaSans(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,32 +175,15 @@ class _ProfileTabState extends State<ProfileTab> {
         backgroundColor: AppTheme.darkBackground,
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const UltraSmoothGravityScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: Column(
           children: [
             const SizedBox(height: 8),
 
-            // Profile Header Avatar Card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(28),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceColor.withValues(alpha: 0.75),
-                borderRadius: BorderRadius.circular(28),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.1),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.35),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
+            // Profile Header 3D Gravity Card
+            Gravity3DCard(
+              padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
                   Stack(
@@ -111,44 +231,78 @@ class _ProfileTabState extends State<ProfileTab> {
                   Text(
                     user?.name ?? 'User Name',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
                       color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    user?.formattedUsername ?? '@username',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.neonPinkGlow,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     user?.email ?? 'email@domain.com',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 14,
+                      fontSize: 13,
                       color: AppTheme.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.18),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppTheme.primaryColor.withValues(alpha: 0.4),
+                  const SizedBox(height: 18),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () => _showEditProfileDialog(context, authProvider),
+                        icon: const Icon(Icons.edit_rounded, size: 18, color: Colors.white),
+                        label: Text(
+                          'Edit Profile',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Member since ${DateFormatter.formatTimestamp(user?.createdAt)}',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.neonCyan,
+                      const SizedBox(width: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppTheme.primaryColor.withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: Text(
+                          'Member since ${DateFormatter.formatTimestamp(user?.createdAt)}',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.neonPinkGlow,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
-            // Settings & Author Info Container
+            // Settings & Security Container
             Container(
               decoration: BoxDecoration(
                 color: AppTheme.surfaceColor.withValues(alpha: 0.65),
@@ -167,8 +321,21 @@ class _ProfileTabState extends State<ProfileTab> {
               child: Column(
                 children: [
                   _buildProfileTile(
+                    icon: Icons.person_outline_rounded,
+                    iconColor: AppTheme.primaryColor,
+                    title: 'Edit Account Details',
+                    subtitle: 'Change display name & @username handle',
+                    onTap: () => _showEditProfileDialog(context, authProvider),
+                  ),
+                  Divider(
+                    height: 1,
+                    indent: 64,
+                    endIndent: 20,
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
+                  _buildProfileTile(
                     icon: Icons.notifications_active_outlined,
-                    iconColor: AppTheme.neonCyan,
+                    iconColor: AppTheme.neonPinkGlow,
                     title: 'Push Notifications',
                     subtitle: 'Real-time FCM message alerts',
                     trailing: Switch(
@@ -218,7 +385,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       dropdownColor: AppTheme.surfaceColor,
                       underline: const SizedBox(),
                       style: GoogleFonts.plusJakartaSans(
-                        color: AppTheme.neonCyan,
+                        color: AppTheme.neonPinkGlow,
                         fontWeight: FontWeight.w700,
                       ),
                       items: ['Off', '1 Min', '1 Hour', '24 Hours']
@@ -311,8 +478,10 @@ class _ProfileTabState extends State<ProfileTab> {
     required String title,
     required String subtitle,
     Widget? trailing,
+    VoidCallback? onTap,
   }) {
     return ListTile(
+      onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       leading: Container(
         padding: const EdgeInsets.all(10),
