@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
@@ -8,7 +9,7 @@ import '../../theme/app_theme.dart';
 import '../chat_room_screen.dart';
 
 class UsersTab extends StatefulWidget {
-  const UsersTab({Key? key}) : super(key: key);
+  const UsersTab({super.key});
 
   @override
   State<UsersTab> createState() => _UsersTabState();
@@ -43,9 +44,12 @@ class _UsersTabState extends State<UsersTab> {
     if (authProvider.currentUser!.uid == targetUser.uid) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('You cannot chat with yourself.'),
+          content: Text(
+            'You cannot chat with yourself.',
+            style: GoogleFonts.plusJakartaSans(color: Colors.white),
+          ),
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
       );
       return;
@@ -71,7 +75,10 @@ class _UsersTabState extends State<UsersTab> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to open chat: $e'),
+            content: Text(
+              'Failed to open chat: $e',
+              style: GoogleFonts.plusJakartaSans(color: Colors.white),
+            ),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
           ),
@@ -85,31 +92,58 @@ class _UsersTabState extends State<UsersTab> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: AppTheme.darkBackground,
       appBar: AppBar(
-        title: const Text(
-          'Discover People',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
-          ),
+        title: Row(
+          children: [
+            Text(
+              'Discover People',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 26,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+                letterSpacing: -0.8,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.5),
+                ),
+              ),
+              child: Text(
+                '${userProvider.users.length} Active',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.neonCyan,
+                ),
+              ),
+            ),
+          ],
         ),
         elevation: 0,
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: AppTheme.darkBackground,
       ),
       body: Column(
         children: [
-          // Modern Search Bar
+          // Cyber Dark Search Bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppTheme.surfaceColor.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.1),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
+                    color: Colors.black.withValues(alpha: 0.3),
                     blurRadius: 16,
                     offset: const Offset(0, 4),
                   ),
@@ -117,16 +151,26 @@ class _UsersTabState extends State<UsersTab> {
               ),
               child: TextField(
                 controller: _searchController,
+                style: GoogleFonts.plusJakartaSans(color: Colors.white),
                 onChanged: (value) {
                   userProvider.setSearchQuery(value);
                 },
                 decoration: InputDecoration(
-                  hintText: 'Search people by name or email...',
-                  hintStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
-                  prefixIcon: const Icon(Icons.search_rounded, color: AppTheme.primaryColor),
+                  hintText: 'Search by name or email...',
+                  hintStyle: GoogleFonts.plusJakartaSans(
+                    color: AppTheme.textSecondary,
+                    fontSize: 14,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search_rounded,
+                    color: AppTheme.neonCyan,
+                  ),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
-                          icon: const Icon(Icons.clear_rounded, color: Color(0xFF94A3B8)),
+                          icon: const Icon(
+                            Icons.clear_rounded,
+                            color: AppTheme.textSecondary,
+                          ),
                           onPressed: () {
                             _searchController.clear();
                             userProvider.setSearchQuery('');
@@ -146,7 +190,10 @@ class _UsersTabState extends State<UsersTab> {
           Expanded(
             child: userProvider.isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: AppTheme.primaryColor))
+                    child: CircularProgressIndicator(
+                      color: AppTheme.primaryColor,
+                    ),
+                  )
                 : userProvider.users.isEmpty
                     ? Center(
                         child: Column(
@@ -155,28 +202,28 @@ class _UsersTabState extends State<UsersTab> {
                             Container(
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                                color: AppTheme.primaryColor.withValues(alpha: 0.15),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.people_outline_rounded,
                                 size: 56,
-                                color: AppTheme.primaryColor,
+                                color: AppTheme.neonCyan,
                               ),
                             ),
                             const SizedBox(height: 16),
-                            const Text(
+                            Text(
                               'No registered users found',
-                              style: TextStyle(
+                              style: GoogleFonts.plusJakartaSans(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.textPrimary,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 6),
-                            const Text(
+                            Text(
                               'Try searching for another name or email',
-                              style: TextStyle(
+                              style: GoogleFonts.plusJakartaSans(
                                 fontSize: 14,
                                 color: AppTheme.textSecondary,
                               ),
@@ -195,20 +242,23 @@ class _UsersTabState extends State<UsersTab> {
                           return Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
+                              color: AppTheme.surfaceColor.withValues(alpha: 0.6),
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.08),
+                              ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.03),
-                                  blurRadius: 12,
+                                  color: Colors.black.withValues(alpha: 0.25),
+                                  blurRadius: 16,
                                   offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
                             child: ListTile(
                               contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
+                                horizontal: 18,
+                                vertical: 10,
                               ),
                               leading: Stack(
                                 children: [
@@ -224,10 +274,10 @@ class _UsersTabState extends State<UsersTab> {
                                         user.name.isNotEmpty
                                             ? user.name[0].toUpperCase()
                                             : 'U',
-                                        style: const TextStyle(
+                                        style: GoogleFonts.plusJakartaSans(
                                           color: Colors.white,
                                           fontSize: 20,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w800,
                                         ),
                                       ),
                                     ),
@@ -239,10 +289,10 @@ class _UsersTabState extends State<UsersTab> {
                                       width: 14,
                                       height: 14,
                                       decoration: BoxDecoration(
-                                        color: AppTheme.secondaryColor,
+                                        color: AppTheme.onlineEmerald,
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: Colors.white,
+                                          color: AppTheme.darkBackground,
                                           width: 2.5,
                                         ),
                                       ),
@@ -252,15 +302,15 @@ class _UsersTabState extends State<UsersTab> {
                               ),
                               title: Text(
                                 user.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontWeight: FontWeight.w700,
                                   fontSize: 16,
-                                  color: AppTheme.textPrimary,
+                                  color: Colors.white,
                                 ),
                               ),
                               subtitle: Text(
                                 user.email,
-                                style: const TextStyle(
+                                style: GoogleFonts.plusJakartaSans(
                                   color: AppTheme.textSecondary,
                                   fontSize: 13,
                                 ),
@@ -268,13 +318,21 @@ class _UsersTabState extends State<UsersTab> {
                               trailing: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                                  gradient: AppTheme.primaryGradient,
                                   shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.primaryColor
+                                          .withValues(alpha: 0.4),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
                                 child: const Icon(
                                   Icons.chat_bubble_outline_rounded,
-                                  color: AppTheme.primaryColor,
-                                  size: 20,
+                                  color: Colors.white,
+                                  size: 18,
                                 ),
                               ),
                               onTap: () => _onUserSelected(user),

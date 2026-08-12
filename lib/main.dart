@@ -38,7 +38,7 @@ class RealTimeChatApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Real-Time Chat App',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.darkTheme,
         home: const AuthWrapper(),
       ),
     );

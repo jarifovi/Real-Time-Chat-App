@@ -1,100 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Ultra-Modern Brand Colors (Indigo Violet Emerald Palette)
-  static const Color primaryColor = Color(0xFF6366F1); // Modern Indigo
-  static const Color primaryAccent = Color(0xFF8B5CF6); // Vibrant Purple / Violet
-  static const Color secondaryColor = Color(0xFF10B981); // Emerald Green
-  static const Color backgroundColor = Color(0xFFF8FAFC); // Clean Slate Sky Light
-  static const Color cardColor = Colors.white;
-  static const Color textPrimary = Color(0xFF0F172A); // Rich Dark Slate
-  static const Color textSecondary = Color(0xFF64748B); // Slate Muted
+  // Ultra-Premium Dark Midnight Palette
+  static const Color darkBackground = Color(0xFF090D16); // Deepest Midnight
+  static const Color surfaceColor = Color(0xFF131C2E);    // Glass Surface Dark
+  static const Color surfaceBorder = Color(0x1FFFFFFF);   // Subtle 1px Glass Border
   
+  // Neon Brand Accents
+  static const Color primaryColor = Color(0xFF7C3AED);   // Electric Violet
+  static const Color primaryAccent = Color(0xFF4F46E5);  // Deep Indigo
+  static const Color neonCyan = Color(0xFF06B6D4);       // Cyber Cyan
+  static const Color onlineEmerald = Color(0xFF10B981);  // Glowing Emerald
+
+  // Text Colors
+  static const Color textPrimary = Color(0xFFF8FAFC);    // Bright Slate White
+  static const Color textSecondary = Color(0xFF94A3B8);  // Soft Muted Slate
+
   // Linear Gradients
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+    colors: [Color(0xFF7C3AED), Color(0xFF4F46E5)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const LinearGradient avatarGradient = LinearGradient(
-    colors: [Color(0xFFEC4899), Color(0xFF8B5CF6)],
+    colors: [Color(0xFFEC4899), Color(0xFF8B5CF6), Color(0xFF06B6D4)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  static const LinearGradient bubbleGradient = LinearGradient(
-    colors: [Color(0xFF6366F1), Color(0xFF7C3AED)],
+  static const LinearGradient sentBubbleGradient = LinearGradient(
+    colors: [Color(0xFF7C3AED), Color(0xFF6366F1)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  // Chat Bubble Colors
-  static const Color sentBubbleColor = Color(0xFF6366F1);
-  static const Color sentBubbleText = Colors.white;
-  static const Color receivedBubbleColor = Colors.white;
-  static const Color receivedBubbleText = Color(0xFF0F172A);
+  static ThemeData get darkTheme {
+    final baseTextTheme = GoogleFonts.plusJakartaSansTextTheme(ThemeData.dark().textTheme);
 
-  static ThemeData get lightTheme {
-    return ThemeData(
-      useMaterial3: true,
+    return ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: darkBackground,
       primaryColor: primaryColor,
-      scaffoldBackgroundColor: backgroundColor,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryColor,
+      colorScheme: const ColorScheme.dark(
         primary: primaryColor,
-        secondary: primaryAccent,
-        surface: cardColor,
+        secondary: neonCyan,
+        surface: surfaceColor,
       ),
-      appBarTheme: const AppBarTheme(
+      textTheme: baseTextTheme.apply(
+        bodyColor: textPrimary,
+        displayColor: textPrimary,
+      ),
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: textPrimary,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
+        titleTextStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
           color: textPrimary,
           letterSpacing: -0.5,
         ),
-      ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: Color(0xFF94A3B8),
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-        type: BottomNavigationBarType.fixed,
-        elevation: 10,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
-          elevation: 4,
-          shadowColor: primaryColor.withValues(alpha: 0.3),
+          elevation: 6,
+          shadowColor: primaryColor.withValues(alpha: 0.5),
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: const TextStyle(
+          textStyle: GoogleFonts.plusJakartaSans(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
             letterSpacing: 0.2,
           ),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: const Color(0xFF1E293B).withValues(alpha: 0.6),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+          borderSide: const BorderSide(color: surfaceBorder),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+          borderSide: const BorderSide(color: surfaceBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),

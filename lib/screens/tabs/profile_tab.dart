@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/date_formatter.dart';
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({Key? key}) : super(key: key);
+  const ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,38 +14,44 @@ class ProfileTab extends StatelessWidget {
     final user = authProvider.currentUser;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: AppTheme.darkBackground,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'My Profile',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
+            letterSpacing: -0.8,
           ),
         ),
         elevation: 0,
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: AppTheme.darkBackground,
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: Column(
           children: [
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
 
             // Profile Header Avatar Card
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
+                color: AppTheme.surfaceColor.withValues(alpha: 0.75),
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.1),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 20,
-                    offset: const Offset(0, 6),
+                    color: Colors.black.withValues(alpha: 0.35),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
@@ -58,16 +65,16 @@ class ProfileTab extends StatelessWidget {
                         height: 96,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          gradient: AppTheme.primaryGradient,
+                          gradient: AppTheme.avatarGradient,
                         ),
                         child: Center(
                           child: Text(
                             user != null && user.name.isNotEmpty
                                 ? user.name[0].toUpperCase()
                                 : 'U',
-                            style: const TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 42,
+                              fontWeight: FontWeight.w800,
                               color: Colors.white,
                             ),
                           ),
@@ -77,13 +84,13 @@ class ProfileTab extends StatelessWidget {
                         right: 4,
                         bottom: 4,
                         child: Container(
-                          width: 20,
-                          height: 20,
+                          width: 22,
+                          height: 22,
                           decoration: BoxDecoration(
-                            color: AppTheme.secondaryColor,
+                            color: AppTheme.onlineEmerald,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: Colors.white,
+                              color: AppTheme.darkBackground,
                               width: 3,
                             ),
                           ),
@@ -94,33 +101,36 @@ class ProfileTab extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     user?.name ?? 'User Name',
-                    style: const TextStyle(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.textPrimary,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     user?.email ?? 'email@domain.com',
-                    style: const TextStyle(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       color: AppTheme.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 14),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withValues(alpha: 0.4),
+                      ),
                     ),
                     child: Text(
                       'Member since ${DateFormatter.formatTimestamp(user?.createdAt)}',
-                      style: const TextStyle(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.neonCyan,
                       ),
                     ),
                   ),
@@ -129,16 +139,19 @@ class ProfileTab extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Settings & Preferences Section
+            // Settings & Author Info Container
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
+                color: AppTheme.surfaceColor.withValues(alpha: 0.65),
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withValues(alpha: 0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
                   ),
                 ],
               ),
@@ -146,7 +159,7 @@ class ProfileTab extends StatelessWidget {
                 children: [
                   _buildProfileTile(
                     icon: Icons.notifications_active_outlined,
-                    iconColor: const Color(0xFF3B82F6),
+                    iconColor: AppTheme.neonCyan,
                     title: 'Notifications',
                     subtitle: 'Real-time message alerts',
                     trailing: Switch(
@@ -155,21 +168,36 @@ class ProfileTab extends StatelessWidget {
                       onChanged: (val) {},
                     ),
                   ),
-                  const Divider(height: 1, indent: 64, endIndent: 20),
+                  Divider(
+                    height: 1,
+                    indent: 64,
+                    endIndent: 20,
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
                   _buildProfileTile(
                     icon: Icons.security_rounded,
-                    iconColor: const Color(0xFF10B981),
+                    iconColor: AppTheme.onlineEmerald,
                     title: 'Privacy & Security',
-                    subtitle: 'SHA-256 hashed password encryption',
+                    subtitle: 'SHA-256 password encryption',
                   ),
-                  const Divider(height: 1, indent: 64, endIndent: 20),
+                  Divider(
+                    height: 1,
+                    indent: 64,
+                    endIndent: 20,
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
                   _buildProfileTile(
                     icon: Icons.info_outline_rounded,
                     iconColor: const Color(0xFF8B5CF6),
                     title: 'App Version',
                     subtitle: 'v1.0.0 (Production Build)',
                   ),
-                  const Divider(height: 1, indent: 64, endIndent: 20),
+                  Divider(
+                    height: 1,
+                    indent: 64,
+                    endIndent: 20,
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
                   _buildProfileTile(
                     icon: Icons.code_rounded,
                     iconColor: const Color(0xFFEC4899),
@@ -181,24 +209,27 @@ class ProfileTab extends StatelessWidget {
             ),
             const SizedBox(height: 28),
 
-            // Modern Logout Button
+            // Logout Button
             authProvider.isLoading
                 ? const CircularProgressIndicator(color: AppTheme.primaryColor)
                 : Container(
                     width: double.infinity,
-                    height: 54,
+                    height: 56,
                     decoration: BoxDecoration(
-                      color: Colors.redAccent.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.redAccent.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: Colors.redAccent.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: ElevatedButton.icon(
                       onPressed: () => _confirmLogout(context, authProvider),
                       icon: const Icon(Icons.logout_rounded, color: Colors.redAccent),
-                      label: const Text(
+                      label: Text(
                         'Log Out',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
                           color: Colors.redAccent,
                         ),
                       ),
@@ -206,7 +237,7 @@ class ProfileTab extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(18),
                         ),
                       ),
                     ),
@@ -230,27 +261,32 @@ class ProfileTab extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: iconColor.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
+          color: iconColor.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: Icon(icon, color: iconColor, size: 22),
       ),
       title: Text(
         title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
+        style: GoogleFonts.plusJakartaSans(
+          fontWeight: FontWeight.w700,
           fontSize: 15,
-          color: AppTheme.textPrimary,
+          color: Colors.white,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(
+        style: GoogleFonts.plusJakartaSans(
           color: AppTheme.textSecondary,
           fontSize: 13,
         ),
       ),
-      trailing: trailing ?? const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFFCBD5E1)),
+      trailing: trailing ??
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 16,
+            color: AppTheme.textSecondary,
+          ),
     );
   }
 
@@ -258,13 +294,31 @@ class ProfileTab extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Log Out'),
-        content: const Text('Are you sure you want to log out of your account?'),
+        backgroundColor: AppTheme.surfaceColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
+        title: Text(
+          'Log Out',
+          style: GoogleFonts.plusJakartaSans(
+            color: Colors.white,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        content: Text(
+          'Are you sure you want to log out of your account?',
+          style: GoogleFonts.plusJakartaSans(
+            color: AppTheme.textSecondary,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -273,9 +327,17 @@ class ProfileTab extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.redAccent,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: const Text('Log Out', style: TextStyle(color: Colors.white)),
+            child: Text(
+              'Log Out',
+              style: GoogleFonts.plusJakartaSans(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
         ],
       ),

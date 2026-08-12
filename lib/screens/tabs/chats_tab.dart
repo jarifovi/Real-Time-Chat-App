@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/chat_provider.dart';
@@ -10,7 +11,7 @@ import '../../utils/date_formatter.dart';
 import '../chat_room_screen.dart';
 
 class ChatsTab extends StatefulWidget {
-  const ChatsTab({Key? key}) : super(key: key);
+  const ChatsTab({super.key});
 
   @override
   State<ChatsTab> createState() => _ChatsTabState();
@@ -59,18 +60,42 @@ class _ChatsTabState extends State<ChatsTab> {
     final currentUid = authProvider.currentUser?.uid ?? '';
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: AppTheme.darkBackground,
       appBar: AppBar(
-        title: const Text(
-          'Messages',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
-          ),
+        title: Row(
+          children: [
+            Text(
+              'Messages',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 26,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+                letterSpacing: -0.8,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppTheme.neonCyan.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: AppTheme.neonCyan.withValues(alpha: 0.4),
+                ),
+              ),
+              child: Text(
+                '${chatProvider.chats.length} Threads',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.neonCyan,
+                ),
+              ),
+            ),
+          ],
         ),
         elevation: 0,
-        backgroundColor: AppTheme.backgroundColor,
+        backgroundColor: AppTheme.darkBackground,
       ),
       body: chatProvider.isLoading
           ? const Center(
@@ -83,28 +108,28 @@ class _ChatsTabState extends State<ChatsTab> {
                       Container(
                         padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.08),
+                          color: AppTheme.primaryColor.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.forum_outlined,
                           size: 56,
-                          color: AppTheme.primaryColor,
+                          color: AppTheme.neonCyan,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
+                      Text(
                         'No active conversations yet',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.textPrimary,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 6),
-                      const Text(
+                      Text(
                         'Go to Users tab to start a new chat',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 14,
                           color: AppTheme.textSecondary,
                         ),
@@ -129,20 +154,23 @@ class _ChatsTabState extends State<ChatsTab> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        color: AppTheme.surfaceColor.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.08),
+                        ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.03),
-                            blurRadius: 12,
+                            color: Colors.black.withValues(alpha: 0.25),
+                            blurRadius: 16,
                             offset: const Offset(0, 4),
                           ),
                         ],
                       ),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                          horizontal: 18,
+                          vertical: 10,
                         ),
                         leading: Stack(
                           children: [
@@ -158,10 +186,10 @@ class _ChatsTabState extends State<ChatsTab> {
                                   peerUser != null && peerUser.name.isNotEmpty
                                       ? peerUser.name[0].toUpperCase()
                                       : 'C',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.plusJakartaSans(
                                     color: Colors.white,
                                     fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w800,
                                   ),
                                 ),
                               ),
@@ -173,10 +201,10 @@ class _ChatsTabState extends State<ChatsTab> {
                                 width: 14,
                                 height: 14,
                                 decoration: BoxDecoration(
-                                  color: AppTheme.secondaryColor,
+                                  color: AppTheme.onlineEmerald,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Colors.white,
+                                    color: AppTheme.darkBackground,
                                     width: 2.5,
                                   ),
                                 ),
@@ -186,10 +214,10 @@ class _ChatsTabState extends State<ChatsTab> {
                         ),
                         title: Text(
                           peerUser?.name ?? 'Chat',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontWeight: FontWeight.w700,
                             fontSize: 16,
-                            color: AppTheme.textPrimary,
+                            color: Colors.white,
                           ),
                         ),
                         subtitle: Text(
@@ -198,23 +226,38 @@ class _ChatsTabState extends State<ChatsTab> {
                               : 'Tap to send a message...',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans(
                             color: chatRoom.lastMessage.isNotEmpty
                                 ? AppTheme.textSecondary
-                                : AppTheme.primaryColor,
+                                : AppTheme.neonCyan,
                             fontSize: 14,
                             fontWeight: chatRoom.lastMessage.isNotEmpty
-                                ? FontWeight.normal
-                                : FontWeight.w500,
+                                ? FontWeight.w400
+                                : FontWeight.w600,
                           ),
                         ),
-                        trailing: Text(
-                          DateFormatter.formatTimestamp(chatRoom.lastMessageAt),
-                          style: const TextStyle(
-                            color: Color(0xFF94A3B8),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              DateFormatter.formatTimestamp(chatRoom.lastMessageAt),
+                              style: GoogleFonts.plusJakartaSans(
+                                color: AppTheme.textSecondary,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: AppTheme.primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ],
                         ),
                         onTap: () {
                           if (peerUser != null) {
