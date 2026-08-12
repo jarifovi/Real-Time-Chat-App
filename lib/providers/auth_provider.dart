@@ -36,6 +36,7 @@ class AuthProvider with ChangeNotifier {
     required String email,
     required String password,
     String? username,
+    String? photoUrl,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -47,6 +48,7 @@ class AuthProvider with ChangeNotifier {
         email: email,
         password: password,
         username: username,
+        photoUrl: photoUrl,
       );
       _currentUser = user;
       _isLoading = false;
@@ -92,6 +94,7 @@ class AuthProvider with ChangeNotifier {
   Future<bool> updateProfile({
     required String newName,
     required String newUsername,
+    String? newPhotoUrl,
   }) async {
     if (_currentUser == null) return false;
     _isLoading = true;
@@ -102,6 +105,7 @@ class AuthProvider with ChangeNotifier {
         uid: _currentUser!.uid,
         newName: newName,
         newUsername: newUsername,
+        newPhotoUrl: newPhotoUrl,
       );
 
       if (updated != null) {

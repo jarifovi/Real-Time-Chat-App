@@ -11,6 +11,7 @@ import '../providers/message_provider.dart';
 import '../providers/chat_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/date_formatter.dart';
+import '../widgets/panda_avatar_widget.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final ChatRoomModel chatRoom;
@@ -474,45 +475,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               )
             : Row(
                 children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: 42,
-                        height: 42,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: AppTheme.avatarGradient,
-                        ),
-                        child: Center(
-                          child: Text(
-                            widget.peerUser.name.isNotEmpty
-                                ? widget.peerUser.name[0].toUpperCase()
-                                : 'P',
-                            style: GoogleFonts.plusJakartaSans(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            color: AppTheme.onlineEmerald,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppTheme.surfaceColor,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  PandaAvatarWidget(
+                    name: widget.peerUser.name,
+                    photoUrl: widget.peerUser.photoUrl,
+                    size: 42,
+                    showOnlineBadge: true,
                   ),
                   const SizedBox(width: 12),
                   Column(

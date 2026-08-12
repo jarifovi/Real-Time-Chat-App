@@ -5,6 +5,7 @@ import '../../providers/auth_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/date_formatter.dart';
 import '../../widgets/gravity_3d_card.dart';
+import '../../widgets/panda_avatar_widget.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -24,132 +25,223 @@ class _ProfileTabState extends State<ProfileTab> {
 
     final nameController = TextEditingController(text: currentUser.name);
     final usernameController = TextEditingController(text: currentUser.username);
+    final photoUrlController = TextEditingController(text: currentUser.photoUrl ?? '');
+    String selectedPresetUrl = currentUser.photoUrl ?? PandaAvatarWidget.pandaPresets[0]['url']!;
     final formKey = GlobalKey<FormState>();
 
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.surfaceColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28),
-          side: BorderSide(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
-        ),
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.2),
-                shape: BoxShape.circle,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppTheme.surfaceColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+            side: BorderSide(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.edit_rounded,
+                  color: AppTheme.primaryColor,
+                  size: 22,
+                ),
               ),
-              child: const Icon(
-                Icons.edit_rounded,
-                color: AppTheme.primaryColor,
-                size: 22,
+              const SizedBox(width: 12),
+              Text(
+                'Edit Profile',
+                style: GoogleFonts.plusJakartaSans(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+          content: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+
+                  // Avatar Picker Title
+                  Text(
+                    'Choose Panda Avatar 🐾',
+                    style: GoogleFonts.plusJakartaSans(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Preset Avatars Selector Row
+                  SizedBox(
+                    height: 60,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: PandaAvatarWidget.pandaPresets.length,
+                      itemBuilder: (context, index) {
+                        final preset = PandaAvatarWidget.pandaPresets[index];
+                        final isSelected = selectedPresetUrl == preset['url'];
+
+                        return GestureDetector(
+                          onTap: () {
+                            setDialogState(() {
+                              selectedPresetUrl = preset['url']!;
+                              photoUrlController.clear();
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: isSelected
+                                    ? AppTheme.primaryColor
+                                    : Colors.white.withValues(alpha: 0.15),
+                                width: isSelected ? 3 : 1,
+                              ),
+                            ),
+                            child: PandaAvatarWidget(
+                              name: 'Panda',
+                              photoUrl: preset['url'],
+                              size: 50,
+                              showOnlineBadge: isSelected,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Custom Photo URL Input
+                  TextFormField(
+                    controller: photoUrlController,
+                    style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Custom Photo URL (Optional)',
+                      hintText: 'https://...',
+                      hintStyle: GoogleFonts.plusJakartaSans(
+                        color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                        fontSize: 13,
+                      ),
+                      labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+                      prefixIcon: const Icon(Icons.link_rounded, color: AppTheme.primaryColor),
+                    ),
+                    onChanged: (val) {
+                      setDialogState(() {
+                        if (val.trim().isNotEmpty) {
+                          selectedPresetUrl = val.trim();
+                        }
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Display Name
+                  TextFormField(
+                    controller: nameController,
+                    style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Display Name',
+                      labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+                      prefixIcon: const Icon(Icons.badge_rounded, color: AppTheme.primaryColor),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Username (@handle)
+                  TextFormField(
+                    controller: usernameController,
+                    style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Username (@handle)',
+                      labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+                      prefixIcon: const Icon(Icons.alternate_email_rounded, color: AppTheme.primaryAccent),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a username';
+                      }
+                      if (value.trim().length < 3) {
+                        return 'Username must be at least 3 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 12),
-            Text(
-              'Edit Profile',
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-                fontSize: 20,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (!formKey.currentState!.validate()) return;
+                final messenger = ScaffoldMessenger.of(context);
+                Navigator.of(ctx).pop();
+
+                final finalPhotoUrl = photoUrlController.text.trim().isNotEmpty
+                    ? photoUrlController.text.trim()
+                    : selectedPresetUrl;
+
+                bool success = await authProvider.updateProfile(
+                  newName: nameController.text.trim(),
+                  newUsername: usernameController.text.trim(),
+                  newPhotoUrl: finalPhotoUrl,
+                );
+
+                if (mounted) {
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        success ? 'Profile updated successfully!' : 'Failed to update profile.',
+                        style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                      ),
+                      backgroundColor: success ? AppTheme.primaryColor : Colors.redAccent,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
+              child: Text(
+                'Save Changes',
+                style: GoogleFonts.plusJakartaSans(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ],
         ),
-        content: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: nameController,
-                  style: GoogleFonts.plusJakartaSans(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Display Name',
-                    labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
-                    prefixIcon: const Icon(Icons.badge_rounded, color: AppTheme.primaryColor),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: usernameController,
-                  style: GoogleFonts.plusJakartaSans(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Username (@handle)',
-                    labelStyle: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
-                    prefixIcon: const Icon(Icons.alternate_email_rounded, color: AppTheme.primaryAccent),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a username';
-                    }
-                    if (value.trim().length < 3) {
-                      return 'Username must be at least 3 characters';
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(
-              'Cancel',
-              style: GoogleFonts.plusJakartaSans(color: AppTheme.textSecondary),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (!formKey.currentState!.validate()) return;
-              final messenger = ScaffoldMessenger.of(context);
-              Navigator.of(ctx).pop();
-
-              bool success = await authProvider.updateProfile(
-                newName: nameController.text.trim(),
-                newUsername: usernameController.text.trim(),
-              );
-
-              if (mounted) {
-                messenger.showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      success ? 'Profile updated successfully!' : 'Failed to update profile.',
-                      style: GoogleFonts.plusJakartaSans(color: Colors.white),
-                    ),
-                    backgroundColor: success ? AppTheme.primaryColor : Colors.redAccent,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  ),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text(
-              'Save Changes',
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -186,46 +278,11 @@ class _ProfileTabState extends State<ProfileTab> {
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 96,
-                        height: 96,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: AppTheme.avatarGradient,
-                        ),
-                        child: Center(
-                          child: Text(
-                            user != null && user.name.isNotEmpty
-                                ? user.name[0].toUpperCase()
-                                : 'U',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 42,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 4,
-                        bottom: 4,
-                        child: Container(
-                          width: 22,
-                          height: 22,
-                          decoration: BoxDecoration(
-                            color: AppTheme.onlineEmerald,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppTheme.darkBackground,
-                              width: 3,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  PandaAvatarWidget(
+                    name: user?.name ?? 'User',
+                    photoUrl: user?.photoUrl,
+                    size: 96,
+                    showOnlineBadge: true,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -242,7 +299,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: AppTheme.neonPinkGlow,
+                      color: AppTheme.primaryColor,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -291,7 +348,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: AppTheme.neonPinkGlow,
+                            color: AppTheme.primaryColor,
                           ),
                         ),
                       ),
@@ -324,7 +381,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     icon: Icons.person_outline_rounded,
                     iconColor: AppTheme.primaryColor,
                     title: 'Edit Account Details',
-                    subtitle: 'Change display name & @username handle',
+                    subtitle: 'Change display name, @username & avatar',
                     onTap: () => _showEditProfileDialog(context, authProvider),
                   ),
                   Divider(
@@ -385,7 +442,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       dropdownColor: AppTheme.surfaceColor,
                       underline: const SizedBox(),
                       style: GoogleFonts.plusJakartaSans(
-                        color: AppTheme.neonPinkGlow,
+                        color: AppTheme.primaryColor,
                         fontWeight: FontWeight.w700,
                       ),
                       items: ['Off', '1 Min', '1 Hour', '24 Hours']

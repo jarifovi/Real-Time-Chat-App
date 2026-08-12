@@ -87,66 +87,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // BAO CHAT Panda Mascot Badge Container
-                    Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        Container(
-                          width: 110,
-                          height: 110,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: AppTheme.primaryGradient,
-                            boxShadow: AppTheme.glowingOrbShadows,
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.4),
-                              width: 3.0,
+                    // Official BAO CHAT 3D Logo Image Container
+                    Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: AppTheme.glowingOrbShadows,
+                        border: Border.all(
+                          color: AppTheme.primaryColor.withValues(alpha: 0.8),
+                          width: 3.5,
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/bao_chat_logo.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: AppTheme.primaryGradient,
                             ),
-                          ),
-                          child: Center(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.face_retouching_natural_rounded,
-                                  size: 64,
-                                  color: Colors.white,
-                                ),
-                                Positioned(
-                                  bottom: 6,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: AppTheme.primaryColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.forum_rounded,
-                                      size: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            child: const Center(
+                              child: Icon(
+                                Icons.pets_rounded,
+                                size: 64,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                        // Paw Print Accent Badge 🐾
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: const BoxDecoration(
-                            color: AppTheme.sunnyAmber,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.pets_rounded,
-                            size: 18,
-                            color: AppTheme.darkBackground,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    const SizedBox(height: 22),
+                    const SizedBox(height: 20),
 
                     // BAO CHAT Title
                     Row(
@@ -179,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         letterSpacing: 2.5,
                       ),
                     ),
-                    const SizedBox(height: 34),
+                    const SizedBox(height: 32),
 
                     // 3D Glassmorphic Bamboo Card
                     Gravity3DCard(

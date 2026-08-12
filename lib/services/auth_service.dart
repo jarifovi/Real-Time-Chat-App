@@ -15,6 +15,7 @@ class AuthService {
       name: 'John Doe',
       username: 'johndoe',
       email: 'john@example.com',
+      photoUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
       createdAt: DateTime.now().subtract(const Duration(days: 5)),
     ),
     UserModel(
@@ -22,6 +23,7 @@ class AuthService {
       name: 'Sarah Connor',
       username: 'sarah_c',
       email: 'sarah@example.com',
+      photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
       createdAt: DateTime.now().subtract(const Duration(days: 3)),
     ),
   ];
@@ -46,12 +48,13 @@ class AuthService {
   /// Stream of Auth State Changes
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  /// Register user with Email, Password, Name, and Username
+  /// Register user with Email, Password, Name, Username, and optional Photo URL
   Future<UserModel?> registerUser({
     required String name,
     required String email,
     required String password,
     String? username,
+    String? photoUrl,
   }) async {
     String finalUsername = (username != null && username.trim().isNotEmpty)
         ? username.trim().replaceAll('@', '').toLowerCase()
@@ -67,12 +70,18 @@ class AuthService {
       User? firebaseUser = credential.user;
       if (firebaseUser != null) {
         await firebaseUser.updateDisplayName(name);
+        if (photoUrl != null && photoUrl.isNotEmpty) {
+          try {
+            await firebaseUser.updatePhotoURL(photoUrl);
+          } catch (_) {}
+        }
 
         UserModel newUser = UserModel(
           uid: firebaseUser.uid,
           name: name.trim(),
           username: finalUsername,
           email: email.trim(),
+          photoUrl: photoUrl,
           createdAt: DateTime.now(),
         );
 
@@ -85,12 +94,12 @@ class AuthService {
         return newUser;
       }
     } catch (e) {
-      // Fallback seamlessly to local mode when Firebase API key is unconfigured or invalid
       return _registerLocalUser(
         name: name,
         email: email,
         password: password,
         username: finalUsername,
+        photoUrl: photoUrl,
       );
     }
     return _registerLocalUser(
@@ -98,6 +107,7 @@ class AuthService {
       email: email,
       password: password,
       username: finalUsername,
+      photoUrl: photoUrl,
     );
   }
 
@@ -106,6 +116,7 @@ class AuthService {
     required String email,
     required String password,
     required String username,
+    String? photoUrl,
   }) {
     String localUid = 'user_${DateTime.now().millisecondsSinceEpoch}';
     UserModel newUser = UserModel(
@@ -113,6 +124,7 @@ class AuthService {
       name: name.trim(),
       username: username,
       email: email.trim(),
+      photoUrl: photoUrl,
       createdAt: DateTime.now(),
     );
 
@@ -172,24 +184,35 @@ class AuthService {
     }
   }
 
-  /// Update user profile (Name and Username)
+  /// Update user profile (Name, Username, and Profile Picture URL)
   Future<UserModel?> updateUserProfile({
     required String uid,
     required String newName,
     required String newUsername,
+    String? newPhotoUrl,
   }) async {
     String cleanUsername = newUsername.trim().replaceAll('@', '').toLowerCase();
     String cleanName = newName.trim();
 
     try {
-      await _firestore.collection('users').doc(uid).update({
+      Map<String, dynamic> updateMap = {
         'name': cleanName,
         'username': cleanUsername,
-      });
+      };
+      if (newPhotoUrl != null) {
+        updateMap['photoUrl'] = newPhotoUrl;
+      }
+
+      await _firestore.collection('users').doc(uid).update(updateMap);
 
       User? currentUser = _auth.currentUser;
       if (currentUser != null) {
         await currentUser.updateDisplayName(cleanName);
+        if (newPhotoUrl != null && newPhotoUrl.isNotEmpty) {
+          try {
+            await currentUser.updatePhotoURL(newPhotoUrl);
+          } catch (_) {}
+        }
       }
     } catch (_) {}
 
@@ -204,6 +227,7 @@ class AuthService {
         name: cleanName,
         username: cleanUsername,
         email: old.email,
+        photoUrl: newPhotoUrl ?? old.photoUrl,
         createdAt: old.createdAt,
       );
       _localUsers[index] = updatedModel;
@@ -213,6 +237,7 @@ class AuthService {
         name: cleanName,
         username: cleanUsername,
         email: 'user@example.com',
+        photoUrl: newPhotoUrl,
         createdAt: DateTime.now(),
       );
     }

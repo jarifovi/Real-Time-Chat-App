@@ -7,6 +7,7 @@ import '../../providers/chat_provider.dart';
 import '../../models/user_model.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/gravity_3d_card.dart';
+import '../../widgets/panda_avatar_widget.dart';
 import '../chat_room_screen.dart';
 
 class UsersTab extends StatefulWidget {
@@ -97,16 +98,30 @@ class _UsersTabState extends State<UsersTab> {
       appBar: AppBar(
         title: Row(
           children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                gradient: AppTheme.primaryGradient,
+                shape: BoxShape.circle,
+                boxShadow: AppTheme.glowingOrbShadows,
+              ),
+              child: const Icon(
+                Icons.pets_rounded,
+                size: 20,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 12),
             Text(
-              'Discover People',
+              'Discover Community',
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 26,
-                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
                 color: Colors.white,
                 letterSpacing: -0.8,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
@@ -117,11 +132,11 @@ class _UsersTabState extends State<UsersTab> {
                 ),
               ),
               child: Text(
-                '${userProvider.users.length} Active',
+                '${userProvider.users.length} Pandas',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.neonCyan,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.primaryColor,
                 ),
               ),
             ),
@@ -132,7 +147,7 @@ class _UsersTabState extends State<UsersTab> {
       ),
       body: Column(
         children: [
-          // Cyber Dark Search Bar
+          // Cyber Bamboo Search Bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Container(
@@ -164,7 +179,7 @@ class _UsersTabState extends State<UsersTab> {
                   ),
                   prefixIcon: const Icon(
                     Icons.search_rounded,
-                    color: AppTheme.neonCyan,
+                    color: AppTheme.primaryColor,
                   ),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
@@ -187,7 +202,7 @@ class _UsersTabState extends State<UsersTab> {
             ),
           ),
 
-          // User List View with Ultra Smooth Bouncing Scroll Physics
+          // User List View with Ultra Smooth Physics
           Expanded(
             child: userProvider.isLoading
                 ? const Center(
@@ -207,14 +222,14 @@ class _UsersTabState extends State<UsersTab> {
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
-                                Icons.people_outline_rounded,
+                                Icons.pets_rounded,
                                 size: 56,
-                                color: AppTheme.neonCyan,
+                                color: AppTheme.primaryColor,
                               ),
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'No registered users found',
+                              'No community pandas found',
                               style: GoogleFonts.plusJakartaSans(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
@@ -223,7 +238,7 @@ class _UsersTabState extends State<UsersTab> {
                             ),
                             const SizedBox(height: 6),
                             Text(
-                              'Try searching for another name or email',
+                              'Try searching for another name or @username',
                               style: GoogleFonts.plusJakartaSans(
                                 fontSize: 14,
                                 color: AppTheme.textSecondary,
@@ -242,49 +257,15 @@ class _UsersTabState extends State<UsersTab> {
                             onTap: () => _onUserSelected(user),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 18,
-                              vertical: 10,
+                              vertical: 12,
                             ),
                             child: Row(
                               children: [
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 54,
-                                      height: 54,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: AppTheme.avatarGradient,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          user.name.isNotEmpty
-                                              ? user.name[0].toUpperCase()
-                                              : 'U',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                        width: 14,
-                                        height: 14,
-                                        decoration: BoxDecoration(
-                                          color: AppTheme.onlineEmerald,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: AppTheme.darkBackground,
-                                            width: 2.5,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                PandaAvatarWidget(
+                                  name: user.name,
+                                  photoUrl: user.photoUrl,
+                                  size: 54,
+                                  showOnlineBadge: true,
                                 ),
                                 const SizedBox(width: 14),
                                 Expanded(
@@ -293,19 +274,22 @@ class _UsersTabState extends State<UsersTab> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(
-                                            user.name,
-                                            style: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 16,
-                                              color: Colors.white,
+                                          Flexible(
+                                            child: Text(
+                                              user.name,
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           const SizedBox(width: 6),
                                           Text(
                                             user.formattedUsername,
                                             style: GoogleFonts.plusJakartaSans(
-                                              color: AppTheme.neonPinkGlow,
+                                              color: AppTheme.primaryColor,
                                               fontSize: 13,
                                               fontWeight: FontWeight.w700,
                                             ),

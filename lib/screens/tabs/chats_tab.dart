@@ -8,6 +8,7 @@ import '../../models/chat_room_model.dart';
 import '../../models/user_model.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/gravity_3d_card.dart';
+import '../../widgets/panda_avatar_widget.dart';
 import '../../utils/date_formatter.dart';
 import '../chat_room_screen.dart';
 
@@ -185,45 +186,11 @@ class _ChatsTabState extends State<ChatsTab> {
                       ),
                       child: Row(
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: 54,
-                                height: 54,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: AppTheme.primaryGradient,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    peerUser != null && peerUser.name.isNotEmpty
-                                        ? peerUser.name[0].toUpperCase()
-                                        : 'C',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  width: 14,
-                                  height: 14,
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.onlineEmerald,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: AppTheme.darkBackground,
-                                      width: 2.5,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          PandaAvatarWidget(
+                            name: peerUser?.name ?? 'Chat',
+                            photoUrl: peerUser?.photoUrl,
+                            size: 54,
+                            showOnlineBadge: true,
                           ),
                           const SizedBox(width: 14),
                           Expanded(

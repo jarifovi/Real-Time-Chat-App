@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/gravity_3d_card.dart';
 import '../widgets/gravity_3d_orb.dart';
+import '../widgets/panda_avatar_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -19,7 +20,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _photoUrlController = TextEditingController();
   bool _obscurePassword = true;
+  String _selectedPresetUrl = PandaAvatarWidget.pandaPresets[0]['url']!;
 
   @override
   void dispose() {
@@ -27,11 +30,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _photoUrlController.dispose();
     super.dispose();
   }
 
   void _submitRegister() async {
     if (!_formKey.currentState!.validate()) return;
+
+    final finalPhotoUrl = _photoUrlController.text.trim().isNotEmpty
+        ? _photoUrlController.text.trim()
+        : _selectedPresetUrl;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     bool success = await authProvider.register(
@@ -39,6 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       username: _usernameController.text.trim(),
       email: _emailController.text.trim(),
       password: _passwordController.text,
+      photoUrl: finalPhotoUrl,
     );
 
     if (success && mounted) {
@@ -94,28 +103,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Panda Mascot Head Container 🐾
+                    // Official BAO CHAT Logo Badge
                     Container(
-                      width: 100,
-                      height: 100,
+                      width: 110,
+                      height: 110,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: AppTheme.primaryGradient,
                         boxShadow: AppTheme.glowingOrbShadows,
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.35),
-                          width: 2.5,
+                          color: AppTheme.primaryColor,
+                          width: 3,
                         ),
                       ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.pets_rounded,
-                          size: 54,
-                          color: Colors.white,
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/bao_chat_logo.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => const Icon(
+                            Icons.pets_rounded,
+                            size: 54,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 16),
 
                     Text(
                       'Join BAO CHAT',
@@ -128,23 +140,102 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Real-Time Community & Playful Vibes 🌿',
+                      'Setup Profile Pic & Join 🌿',
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.primaryColor,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 28),
 
                     // 3D Glassmorphic Bamboo Card Container
                     Gravity3DCard(
-                      padding: const EdgeInsets.all(28),
+                      padding: const EdgeInsets.all(24),
                       child: Form(
                         key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            // Profile Pic Avatar Picker Header
+                            Text(
+                              'Choose Profile Avatar 🐾',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+
+                            // Avatar Preset Selector Carousel
+                            SizedBox(
+                              height: 68,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: PandaAvatarWidget.pandaPresets.length,
+                                itemBuilder: (context, index) {
+                                  final preset = PandaAvatarWidget.pandaPresets[index];
+                                  final isSelected = _selectedPresetUrl == preset['url'];
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedPresetUrl = preset['url']!;
+                                        _photoUrlController.clear();
+                                      });
+                                    },
+                                    child: AnimatedContainer(
+                                      duration: const Duration(milliseconds: 200),
+                                      margin: const EdgeInsets.only(right: 12),
+                                      padding: const EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: isSelected
+                                              ? AppTheme.primaryColor
+                                              : Colors.white.withValues(alpha: 0.15),
+                                          width: isSelected ? 3 : 1,
+                                        ),
+                                      ),
+                                      child: PandaAvatarWidget(
+                                        name: 'Panda',
+                                        photoUrl: preset['url'],
+                                        size: 56,
+                                        showOnlineBadge: isSelected,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Custom Photo URL Field (Optional)
+                            TextFormField(
+                              controller: _photoUrlController,
+                              style: GoogleFonts.plusJakartaSans(color: Colors.white),
+                              decoration: InputDecoration(
+                                labelText: 'Or Custom Image URL (Optional)',
+                                hintText: 'https://example.com/avatar.jpg',
+                                hintStyle: GoogleFonts.plusJakartaSans(
+                                  color: AppTheme.textSecondary.withValues(alpha: 0.5),
+                                  fontSize: 13,
+                                ),
+                                labelStyle: GoogleFonts.plusJakartaSans(
+                                  color: AppTheme.textSecondary,
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.add_a_photo_outlined,
+                                  color: AppTheme.primaryColor,
+                                ),
+                              ),
+                              onChanged: (_) {
+                                setState(() {});
+                              },
+                            ),
+                            const SizedBox(height: 18),
+
                             // Full Name
                             TextFormField(
                               controller: _nameController,
