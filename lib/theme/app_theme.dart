@@ -2,74 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // 3D Gravity Deep Midnight Palette
-  static const Color darkBackground = Color(0xFF070A12); // Pure Deep Space
-  static const Color surfaceColor = Color(0xFF0F172A);    // 3D Gravity Surface Card
-  static const Color surfaceLight = Color(0xFF1E293B);    // Elevated 3D Top Highlight
-  static const Color surfaceBorder = Color(0x2BFFFFFF);   // 3D Rim Light
+  // Ultra-Modern Crimson-Pinkish Palette
+  static const Color darkBackground = Color(0xFF0D0714); // Deep Space Crimson Dark
+  static const Color surfaceColor = Color(0xFF1B0E2A);    // Frosted Pinkish-Glass Surface
+  static const Color surfaceLight = Color(0xFF2D1642);    // Elevated Hot Pinkish Surface
+  static const Color surfaceBorder = Color(0x3BFF2E63);   // Neon Rose Rim Light
 
-  // Neon Gravity Accents
-  static const Color primaryColor = Color(0xFF8B5CF6);   // Deep Violet 3D
-  static const Color primaryAccent = Color(0xFF6366F1);  // Electric Indigo
-  static const Color neonCyan = Color(0xFF06B6D4);       // Neon Cyber Blue
-  static const Color onlineEmerald = Color(0xFF10B981);  // 3D Emerald Glow
+  // Vibrant Reddish-Pinkish Accents
+  static const Color primaryColor = Color(0xFFFF2E63);   // Electric Crimson Rose
+  static const Color primaryAccent = Color(0xFFFF007F);  // Hot Magenta Pink
+  static const Color neonCoral = Color(0xFFFF6B6B);      // Sunset Coral Gold
+  static const Color neonPinkGlow = Color(0xFFFF85A1);   // Glowing Soft Pink
+  static const Color neonCyan = Color(0xFFFF85A1);       // Crimson Rose Accent
+  static const Color onlineEmerald = Color(0xFF10B981);  // Online Emerald Status
 
   // Text Colors
-  static const Color textPrimary = Color(0xFFF8FAFC);    // Crisp White
-  static const Color textSecondary = Color(0xFF94A3B8);  // Soft Slate
+  static const Color textPrimary = Color(0xFFFFF0F5);    // Crisp Lavender-White
+  static const Color textSecondary = Color(0xFFC0A5CD);  // Muted Rose-Slate
 
-  // 3D Multi-Layered Gradients
+  // Multi-Pass Glowing Reddish-Pinkish Gradients
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [Color(0xFF8B5CF6), Color(0xFF4F46E5), Color(0xFF06B6D4)],
+    colors: [Color(0xFFFF2E63), Color(0xFFFF007F), Color(0xFFFF6B6B)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  static const LinearGradient gravityOrbGradient = LinearGradient(
-    colors: [Color(0xFFA855F7), Color(0xFF6366F1), Color(0xFF3B82F6)],
+  static const LinearGradient crimsonOrbGradient = LinearGradient(
+    colors: [Color(0xFFFF2E63), Color(0xFF99004D), Color(0xFFFF007F)],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
 
   static const LinearGradient avatarGradient = LinearGradient(
-    colors: [Color(0xFFEC4899), Color(0xFF8B5CF6), Color(0xFF06B6D4)],
+    colors: [Color(0xFFFF007F), Color(0xFFFF2E63), Color(0xFFFF6B6B)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const LinearGradient sentBubbleGradient = LinearGradient(
-    colors: [Color(0xFF7C3AED), Color(0xFF4F46E5)],
+    colors: [Color(0xFFD90429), Color(0xFFFF2E63), Color(0xFFEF233C)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  // 3D Neumorphic Gravity Shadows
+  // 3D Glassmorphic Crimson Depth Shadows
   static List<BoxShadow> get gravity3dShadows => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.6),
+          color: Colors.black.withValues(alpha: 0.7),
           offset: const Offset(8, 12),
-          blurRadius: 20,
+          blurRadius: 22,
           spreadRadius: 2,
         ),
         BoxShadow(
-          color: const Color(0xFF8B5CF6).withValues(alpha: 0.15),
+          color: const Color(0xFFFF2E63).withValues(alpha: 0.2),
           offset: const Offset(-4, -4),
-          blurRadius: 16,
+          blurRadius: 18,
           spreadRadius: 0,
         ),
       ];
 
   static List<BoxShadow> get glowingOrbShadows => [
         BoxShadow(
-          color: primaryColor.withValues(alpha: 0.5),
-          offset: const Offset(0, 10),
-          blurRadius: 28,
-          spreadRadius: 4,
+          color: primaryColor.withValues(alpha: 0.6),
+          offset: const Offset(0, 8),
+          blurRadius: 30,
+          spreadRadius: 6,
         ),
         BoxShadow(
-          color: neonCyan.withValues(alpha: 0.3),
+          color: primaryAccent.withValues(alpha: 0.4),
           offset: const Offset(-6, -6),
-          blurRadius: 20,
+          blurRadius: 22,
           spreadRadius: 2,
         ),
       ];
@@ -82,7 +84,7 @@ class AppTheme {
       primaryColor: primaryColor,
       colorScheme: const ColorScheme.dark(
         primary: primaryColor,
-        secondary: neonCyan,
+        secondary: primaryAccent,
         surface: surfaceColor,
       ),
       textTheme: baseTextTheme.apply(
@@ -105,33 +107,33 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
-          elevation: 10,
-          shadowColor: primaryColor.withValues(alpha: 0.6),
+          elevation: 12,
+          shadowColor: primaryColor.withValues(alpha: 0.7),
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
           ),
           textStyle: GoogleFonts.plusJakartaSans(
             fontSize: 16,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.2,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.3,
           ),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: surfaceLight.withValues(alpha: 0.6),
+        fillColor: surfaceLight.withValues(alpha: 0.7),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           borderSide: const BorderSide(color: surfaceBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           borderSide: const BorderSide(color: surfaceBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           borderSide: const BorderSide(color: primaryColor, width: 2.5),
         ),
       ),
@@ -139,7 +141,7 @@ class AppTheme {
   }
 }
 
-/// Custom Ultra-Smooth Gravity Bouncing Physics
+/// Custom Ultra-Smooth Physics Engine
 class UltraSmoothGravityScrollPhysics extends BouncingScrollPhysics {
   const UltraSmoothGravityScrollPhysics({super.parent});
 
@@ -151,7 +153,7 @@ class UltraSmoothGravityScrollPhysics extends BouncingScrollPhysics {
   @override
   SpringDescription get spring => const SpringDescription(
         mass: 0.8,
-        stiffness: 90.0,
+        stiffness: 95.0,
         damping: 14.0,
       );
 }

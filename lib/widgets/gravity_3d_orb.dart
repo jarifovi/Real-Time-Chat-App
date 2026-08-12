@@ -30,7 +30,7 @@ class _Gravity3DOrbState extends State<Gravity3DOrb>
       duration: const Duration(seconds: 4),
     )..repeat(reverse: true);
 
-    _animation = Tween<double>(begin: -15.0, end: 15.0).animate(
+    _animation = Tween<double>(begin: -18.0, end: 18.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
     );
   }
@@ -56,9 +56,9 @@ class _Gravity3DOrbState extends State<Gravity3DOrb>
               gradient: widget.gradient,
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.35),
-                  blurRadius: 60,
-                  spreadRadius: 20,
+                  color: AppTheme.primaryColor.withValues(alpha: 0.45),
+                  blurRadius: 70,
+                  spreadRadius: 25,
                 ),
               ],
             ),

@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(authProvider.errorMessage!),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: AppTheme.primaryColor,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
@@ -55,24 +55,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 3D Deep Space Background
+          // Deep Space Dark Crimson Background
           Container(color: AppTheme.darkBackground),
 
-          // 3D Gravity Floating Orbs
+          // 3D Crimson & Magenta Floating Orbs
           const Positioned(
-            top: -50,
-            left: -40,
+            top: -60,
+            left: -50,
             child: Gravity3DOrb(
-              size: 260,
-              gradient: AppTheme.gravityOrbGradient,
+              size: 280,
+              gradient: AppTheme.crimsonOrbGradient,
               offset: Offset(0, 0),
             ),
           ),
           const Positioned(
-            bottom: -60,
-            right: -50,
+            bottom: -70,
+            right: -60,
             child: Gravity3DOrb(
-              size: 240,
+              size: 260,
               gradient: AppTheme.primaryGradient,
               offset: Offset(0, 0),
             ),
@@ -87,47 +87,51 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // 3D Metallic Gravity Logo Ring Icon
+                    // Unique 3D Glowing Social Sparkle Pulse Icon
                     Container(
-                      width: 96,
-                      height: 96,
+                      width: 104,
+                      height: 104,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: AppTheme.primaryGradient,
                         boxShadow: AppTheme.glowingOrbShadows,
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 2,
+                          color: Colors.white.withValues(alpha: 0.35),
+                          width: 2.5,
                         ),
                       ),
-                      child: const Icon(
-                        Icons.blur_on_rounded,
-                        size: 54,
-                        color: Colors.white,
+                      child: const Center(
+                        child: Icon(
+                          Icons.auto_awesome_rounded,
+                          size: 58,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
 
+                    // VibePulse Brand Name
                     Text(
-                      '3D Real-Time Chat',
+                      'VibePulse',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 34,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
                         color: Colors.white,
-                        letterSpacing: -0.8,
+                        letterSpacing: -1.2,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     Text(
-                      'Next-gen 3D Gravity Messaging Platform',
+                      'Connect in 3D Crimson Aura',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 15,
-                        color: AppTheme.textSecondary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.neonPinkGlow,
                       ),
                     ),
                     const SizedBox(height: 36),
 
-                    // 3D Gravity Neumorphic Card Container
+                    // 3D Glassmorphic Crimson Card
                     Gravity3DCard(
                       padding: const EdgeInsets.all(28),
                       child: Form(
@@ -157,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.alternate_email_rounded,
-                                  color: AppTheme.neonCyan,
+                                  color: AppTheme.primaryColor,
                                 ),
                               ),
                               validator: (value) {
@@ -181,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.fingerprint_rounded,
-                                  color: AppTheme.primaryColor,
+                                  color: AppTheme.primaryAccent,
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -206,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 28),
 
-                            // 3D Gradient Action Button
+                            // 3D Crimson Hot Pink Button
                             authProvider.isLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(
@@ -217,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 58,
                                     decoration: BoxDecoration(
                                       gradient: AppTheme.primaryGradient,
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(22),
                                       boxShadow: AppTheme.glowingOrbShadows,
                                     ),
                                     child: ElevatedButton(
@@ -226,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius: BorderRadius.circular(22),
                                         ),
                                       ),
                                       child: Text(
@@ -266,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             'Register Now',
                             style: GoogleFonts.plusJakartaSans(
-                              color: AppTheme.neonCyan,
+                              color: AppTheme.primaryColor,
                               fontWeight: FontWeight.w800,
                               fontSize: 15,
                             ),

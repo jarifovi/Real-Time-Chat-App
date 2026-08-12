@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(authProvider.errorMessage!),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: AppTheme.primaryColor,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
@@ -59,24 +59,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 3D Deep Space Background
+          // Deep Space Dark Crimson Background
           Container(color: AppTheme.darkBackground),
 
-          // 3D Gravity Floating Orbs
+          // 3D Crimson & Magenta Floating Orbs
           const Positioned(
-            top: -40,
-            right: -40,
+            top: -50,
+            right: -50,
             child: Gravity3DOrb(
-              size: 250,
-              gradient: AppTheme.gravityOrbGradient,
+              size: 270,
+              gradient: AppTheme.crimsonOrbGradient,
               offset: Offset(0, 0),
             ),
           ),
           const Positioned(
-            bottom: -50,
-            left: -40,
+            bottom: -60,
+            left: -50,
             child: Gravity3DOrb(
-              size: 230,
+              size: 250,
               gradient: AppTheme.primaryGradient,
               offset: Offset(0, 0),
             ),
@@ -91,47 +91,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // 3D Metallic Gravity Logo Ring Icon
+                    // Unique 3D Glowing Social Sparkle Pulse Icon
                     Container(
-                      width: 90,
-                      height: 90,
+                      width: 96,
+                      height: 96,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: AppTheme.primaryGradient,
                         boxShadow: AppTheme.glowingOrbShadows,
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                          width: 2,
+                          color: Colors.white.withValues(alpha: 0.35),
+                          width: 2.5,
                         ),
                       ),
-                      child: const Icon(
-                        Icons.person_add_alt_1_rounded,
-                        size: 48,
-                        color: Colors.white,
+                      child: const Center(
+                        child: Icon(
+                          Icons.favorite_rounded,
+                          size: 52,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     Text(
-                      'Create Account',
+                      'Join VibePulse',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 34,
+                        fontWeight: FontWeight.w900,
                         color: Colors.white,
-                        letterSpacing: -0.8,
+                        letterSpacing: -1.0,
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Join the 3D Gravity Chat Network',
+                      'Experience Next-Gen Crimson Messaging',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 14,
-                        color: AppTheme.textSecondary,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.neonPinkGlow,
                       ),
                     ),
                     const SizedBox(height: 32),
 
-                    // 3D Gravity Card Container
+                    // 3D Glassmorphic Crimson Card Container
                     Gravity3DCard(
                       padding: const EdgeInsets.all(28),
                       child: Form(
@@ -174,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.alternate_email_rounded,
-                                  color: AppTheme.neonCyan,
+                                  color: AppTheme.primaryAccent,
                                 ),
                               ),
                               validator: (value) {
@@ -198,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.fingerprint_rounded,
-                                  color: AppTheme.primaryColor,
+                                  color: AppTheme.neonCoral,
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -234,7 +237,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     height: 58,
                                     decoration: BoxDecoration(
                                       gradient: AppTheme.primaryGradient,
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(22),
                                       boxShadow: AppTheme.glowingOrbShadows,
                                     ),
                                     child: ElevatedButton(
@@ -243,11 +246,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius: BorderRadius.circular(22),
                                         ),
                                       ),
                                       child: Text(
-                                        'Sign Up',
+                                        'Create Account',
                                         style: GoogleFonts.plusJakartaSans(
                                           fontSize: 17,
                                           fontWeight: FontWeight.w800,
@@ -277,7 +280,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Text(
                             'Log In',
                             style: GoogleFonts.plusJakartaSans(
-                              color: AppTheme.neonCyan,
+                              color: AppTheme.primaryColor,
                               fontWeight: FontWeight.w800,
                               fontSize: 15,
                             ),

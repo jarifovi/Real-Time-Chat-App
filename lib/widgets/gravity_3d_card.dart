@@ -49,7 +49,7 @@ class _Gravity3DCardState extends State<Gravity3DCard> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveRadius = widget.borderRadius ?? BorderRadius.circular(24);
+    final effectiveRadius = widget.borderRadius ?? BorderRadius.circular(26);
 
     return Container(
       margin: widget.margin ?? const EdgeInsets.only(bottom: 14),
@@ -72,7 +72,7 @@ class _Gravity3DCardState extends State<Gravity3DCard> {
                 ..setEntry(3, 2, 0.001) // 3D perspective
                 ..rotateX(_rotateX)
                 ..rotateY(_rotateY)
-                ..scaleByDouble(_isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0, 1.0),
+                ..scaleByDouble(_isHovered ? 1.025 : 1.0, _isHovered ? 1.025 : 1.0, 1.0, 1.0),
               transformAlignment: Alignment.center,
               padding: widget.padding ?? const EdgeInsets.all(18),
               decoration: BoxDecoration(
@@ -81,9 +81,9 @@ class _Gravity3DCardState extends State<Gravity3DCard> {
                 borderRadius: effectiveRadius,
                 border: Border.all(
                   color: _isHovered
-                      ? AppTheme.neonCyan.withValues(alpha: 0.5)
+                      ? AppTheme.primaryColor.withValues(alpha: 0.8)
                       : Colors.white.withValues(alpha: 0.1),
-                  width: _isHovered ? 1.5 : 1.0,
+                  width: _isHovered ? 1.8 : 1.0,
                 ),
                 boxShadow: _isHovered
                     ? AppTheme.glowingOrbShadows
