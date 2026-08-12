@@ -119,8 +119,12 @@ class FirestoreService {
     required String senderId,
     required String receiverId,
     required String messageText,
+    String? replyToId,
+    String? replyToText,
+    String type = 'text',
+    String? mediaUrl,
   }) async {
-    if (messageText.trim().isEmpty) return;
+    if (messageText.trim().isEmpty && mediaUrl == null) return;
 
     try {
       WriteBatch batch = _firestore.batch();
@@ -131,12 +135,20 @@ class FirestoreService {
           .collection('messages')
           .doc();
 
+      String displaySnippet = type == 'image'
+          ? '📷 Photo'
+          : (type == 'audio' ? '🎙️ Voice Note' : messageText.trim());
+
       MessageModel newMessage = MessageModel(
         messageId: messageRef.id,
         senderId: senderId,
         receiverId: receiverId,
         message: messageText.trim(),
         timestamp: DateTime.now(),
+        replyToId: replyToId,
+        replyToText: replyToText,
+        type: type,
+        mediaUrl: mediaUrl,
       );
 
       batch.set(messageRef, newMessage.toMap());
@@ -144,8 +156,9 @@ class FirestoreService {
       DocumentReference roomRef =
           _firestore.collection('chats').doc(chatRoomId);
       batch.update(roomRef, {
-        'lastMessage': messageText.trim(),
+        'lastMessage': displaySnippet,
         'lastMessageAt': FieldValue.serverTimestamp(),
+        'isTyping.$senderId': false,
       });
 
       await batch.commit();
@@ -155,12 +168,20 @@ class FirestoreService {
         _localMessages[chatRoomId] = [];
       }
 
+      String displaySnippet = type == 'image'
+          ? '📷 Photo'
+          : (type == 'audio' ? '🎙️ Voice Note' : messageText.trim());
+
       MessageModel newMessage = MessageModel(
         messageId: 'msg_${DateTime.now().millisecondsSinceEpoch}',
         senderId: senderId,
         receiverId: receiverId,
         message: messageText.trim(),
         timestamp: DateTime.now(),
+        replyToId: replyToId,
+        replyToText: replyToText,
+        type: type,
+        mediaUrl: mediaUrl,
       );
 
       _localMessages[chatRoomId]!.add(newMessage);
@@ -169,17 +190,218 @@ class FirestoreService {
           _localChatRooms.indexWhere((r) => r.chatRoomId == chatRoomId);
       if (roomIdx != -1) {
         ChatRoomModel old = _localChatRooms[roomIdx];
+        Map<String, bool> updatedTyping = Map.from(old.isTyping)..[senderId] = false;
+
         _localChatRooms[roomIdx] = ChatRoomModel(
           chatRoomId: old.chatRoomId,
           participants: old.participants,
           createdAt: old.createdAt,
-          lastMessage: messageText.trim(),
+          lastMessage: displaySnippet,
           lastMessageAt: DateTime.now(),
+          isTyping: updatedTyping,
+          pinnedMessageId: old.pinnedMessageId,
+          pinnedMessageText: old.pinnedMessageText,
         );
       }
 
       _notifyLocalMessages(chatRoomId);
       _notifyLocalChats(senderId);
+    }
+  }
+
+  /// Update typing status for current user in chat room
+  Future<void> updateTypingStatus(
+      String chatRoomId, String uid, bool isTyping) async {
+    try {
+      await _firestore.collection('chats').doc(chatRoomId).update({
+        'isTyping.$uid': isTyping,
+      });
+    } catch (_) {
+      int roomIdx =
+          _localChatRooms.indexWhere((r) => r.chatRoomId == chatRoomId);
+      if (roomIdx != -1) {
+        ChatRoomModel old = _localChatRooms[roomIdx];
+        Map<String, bool> updatedTyping = Map.from(old.isTyping)..[uid] = isTyping;
+
+        _localChatRooms[roomIdx] = ChatRoomModel(
+          chatRoomId: old.chatRoomId,
+          participants: old.participants,
+          createdAt: old.createdAt,
+          lastMessage: old.lastMessage,
+          lastMessageAt: old.lastMessageAt,
+          isTyping: updatedTyping,
+          pinnedMessageId: old.pinnedMessageId,
+          pinnedMessageText: old.pinnedMessageText,
+        );
+        _notifyLocalChats(uid);
+      }
+    }
+  }
+
+  /// Toggle emoji reaction on a message
+  Future<void> toggleReaction(
+      String chatRoomId, String messageId, String uid, String emoji) async {
+    try {
+      DocumentReference docRef = _firestore
+          .collection('chats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .doc(messageId);
+
+      DocumentSnapshot doc = await docRef.get();
+      if (doc.exists) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Map<String, dynamic> reactions =
+            Map<String, dynamic>.from(data['reactions'] ?? {});
+
+        if (reactions[uid] == emoji) {
+          reactions.remove(uid);
+        } else {
+          reactions[uid] = emoji;
+        }
+
+        await docRef.update({'reactions': reactions});
+      }
+    } catch (_) {
+      if (_localMessages.containsKey(chatRoomId)) {
+        int msgIdx =
+            _localMessages[chatRoomId]!.indexWhere((m) => m.messageId == messageId);
+        if (msgIdx != -1) {
+          MessageModel old = _localMessages[chatRoomId]![msgIdx];
+          Map<String, String> updatedReactions = Map.from(old.reactions);
+          if (updatedReactions[uid] == emoji) {
+            updatedReactions.remove(uid);
+          } else {
+            updatedReactions[uid] = emoji;
+          }
+
+          _localMessages[chatRoomId]![msgIdx] = MessageModel(
+            messageId: old.messageId,
+            senderId: old.senderId,
+            receiverId: old.receiverId,
+            message: old.message,
+            timestamp: old.timestamp,
+            reactions: updatedReactions,
+            replyToId: old.replyToId,
+            replyToText: old.replyToText,
+            isEdited: old.isEdited,
+            type: old.type,
+            mediaUrl: old.mediaUrl,
+          );
+          _notifyLocalMessages(chatRoomId);
+        }
+      }
+    }
+  }
+
+  /// Pin message to chat room header
+  Future<void> pinMessage(
+      String chatRoomId, String messageId, String messageText) async {
+    try {
+      await _firestore.collection('chats').doc(chatRoomId).update({
+        'pinnedMessageId': messageId,
+        'pinnedMessageText': messageText,
+      });
+    } catch (_) {
+      int roomIdx =
+          _localChatRooms.indexWhere((r) => r.chatRoomId == chatRoomId);
+      if (roomIdx != -1) {
+        ChatRoomModel old = _localChatRooms[roomIdx];
+        _localChatRooms[roomIdx] = ChatRoomModel(
+          chatRoomId: old.chatRoomId,
+          participants: old.participants,
+          createdAt: old.createdAt,
+          lastMessage: old.lastMessage,
+          lastMessageAt: old.lastMessageAt,
+          isTyping: old.isTyping,
+          pinnedMessageId: messageId,
+          pinnedMessageText: messageText,
+        );
+        _notifyLocalChats(old.participants.first);
+      }
+    }
+  }
+
+  /// Unpin message from chat room header
+  Future<void> unpinMessage(String chatRoomId) async {
+    try {
+      await _firestore.collection('chats').doc(chatRoomId).update({
+        'pinnedMessageId': FieldValue.delete(),
+        'pinnedMessageText': FieldValue.delete(),
+      });
+    } catch (_) {
+      int roomIdx =
+          _localChatRooms.indexWhere((r) => r.chatRoomId == chatRoomId);
+      if (roomIdx != -1) {
+        ChatRoomModel old = _localChatRooms[roomIdx];
+        _localChatRooms[roomIdx] = ChatRoomModel(
+          chatRoomId: old.chatRoomId,
+          participants: old.participants,
+          createdAt: old.createdAt,
+          lastMessage: old.lastMessage,
+          lastMessageAt: old.lastMessageAt,
+          isTyping: old.isTyping,
+          pinnedMessageId: null,
+          pinnedMessageText: null,
+        );
+        _notifyLocalChats(old.participants.first);
+      }
+    }
+  }
+
+  /// Delete message
+  Future<void> deleteMessage(String chatRoomId, String messageId) async {
+    try {
+      await _firestore
+          .collection('chats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .doc(messageId)
+          .delete();
+    } catch (_) {
+      if (_localMessages.containsKey(chatRoomId)) {
+        _localMessages[chatRoomId]!
+            .removeWhere((m) => m.messageId == messageId);
+        _notifyLocalMessages(chatRoomId);
+      }
+    }
+  }
+
+  /// Edit message text
+  Future<void> editMessage(
+      String chatRoomId, String messageId, String newText) async {
+    try {
+      await _firestore
+          .collection('chats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .doc(messageId)
+          .update({
+        'message': newText.trim(),
+        'isEdited': true,
+      });
+    } catch (_) {
+      if (_localMessages.containsKey(chatRoomId)) {
+        int msgIdx =
+            _localMessages[chatRoomId]!.indexWhere((m) => m.messageId == messageId);
+        if (msgIdx != -1) {
+          MessageModel old = _localMessages[chatRoomId]![msgIdx];
+          _localMessages[chatRoomId]![msgIdx] = MessageModel(
+            messageId: old.messageId,
+            senderId: old.senderId,
+            receiverId: old.receiverId,
+            message: newText.trim(),
+            timestamp: old.timestamp,
+            reactions: old.reactions,
+            replyToId: old.replyToId,
+            replyToText: old.replyToText,
+            isEdited: true,
+            type: old.type,
+            mediaUrl: old.mediaUrl,
+          );
+          _notifyLocalMessages(chatRoomId);
+        }
+      }
     }
   }
 

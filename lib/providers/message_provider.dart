@@ -34,6 +34,10 @@ class MessageProvider with ChangeNotifier {
     required String senderId,
     required String receiverId,
     required String messageText,
+    String? replyToId,
+    String? replyToText,
+    String type = 'text',
+    String? mediaUrl,
   }) async {
     try {
       await _firestoreService.sendMessage(
@@ -41,11 +45,58 @@ class MessageProvider with ChangeNotifier {
         senderId: senderId,
         receiverId: receiverId,
         messageText: messageText,
+        replyToId: replyToId,
+        replyToText: replyToText,
+        type: type,
+        mediaUrl: mediaUrl,
       );
-    } catch (e) {
-      print('Error sending message: $e');
-      rethrow;
-    }
+    } catch (_) {}
+  }
+
+  Future<void> toggleReaction({
+    required String chatRoomId,
+    required String messageId,
+    required String uid,
+    required String emoji,
+  }) async {
+    await _firestoreService.toggleReaction(chatRoomId, messageId, uid, emoji);
+  }
+
+  Future<void> updateTypingStatus({
+    required String chatRoomId,
+    required String uid,
+    required bool isTyping,
+  }) async {
+    await _firestoreService.updateTypingStatus(chatRoomId, uid, isTyping);
+  }
+
+  Future<void> deleteMessage({
+    required String chatRoomId,
+    required String messageId,
+  }) async {
+    await _firestoreService.deleteMessage(chatRoomId, messageId);
+  }
+
+  Future<void> editMessage({
+    required String chatRoomId,
+    required String messageId,
+    required String newText,
+  }) async {
+    await _firestoreService.editMessage(chatRoomId, messageId, newText);
+  }
+
+  Future<void> pinMessage({
+    required String chatRoomId,
+    required String messageId,
+    required String messageText,
+  }) async {
+    await _firestoreService.pinMessage(chatRoomId, messageId, messageText);
+  }
+
+  Future<void> unpinMessage({
+    required String chatRoomId,
+  }) async {
+    await _firestoreService.unpinMessage(chatRoomId);
   }
 
   void clearMessages() {

@@ -5,8 +5,17 @@ import '../../providers/auth_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/date_formatter.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
+
+  @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
+  bool _notificationsEnabled = true;
+  bool _biometricEnabled = true;
+  String _disappearingTimer = 'Off';
 
   @override
   Widget build(BuildContext context) {
@@ -160,12 +169,71 @@ class ProfileTab extends StatelessWidget {
                   _buildProfileTile(
                     icon: Icons.notifications_active_outlined,
                     iconColor: AppTheme.neonCyan,
-                    title: 'Notifications',
-                    subtitle: 'Real-time message alerts',
+                    title: 'Push Notifications',
+                    subtitle: 'Real-time FCM message alerts',
                     trailing: Switch(
-                      value: true,
+                      value: _notificationsEnabled,
                       activeThumbColor: AppTheme.primaryColor,
-                      onChanged: (val) {},
+                      onChanged: (val) {
+                        setState(() {
+                          _notificationsEnabled = val;
+                        });
+                      },
+                    ),
+                  ),
+                  Divider(
+                    height: 1,
+                    indent: 64,
+                    endIndent: 20,
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
+                  _buildProfileTile(
+                    icon: Icons.fingerprint_rounded,
+                    iconColor: AppTheme.onlineEmerald,
+                    title: 'Biometric App Lock',
+                    subtitle: 'Fingerprint / Face ID security',
+                    trailing: Switch(
+                      value: _biometricEnabled,
+                      activeThumbColor: AppTheme.primaryColor,
+                      onChanged: (val) {
+                        setState(() {
+                          _biometricEnabled = val;
+                        });
+                      },
+                    ),
+                  ),
+                  Divider(
+                    height: 1,
+                    indent: 64,
+                    endIndent: 20,
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
+                  _buildProfileTile(
+                    icon: Icons.timer_outlined,
+                    iconColor: const Color(0xFFF59E0B),
+                    title: 'Disappearing Messages',
+                    subtitle: 'Auto-delete after expiry',
+                    trailing: DropdownButton<String>(
+                      value: _disappearingTimer,
+                      dropdownColor: AppTheme.surfaceColor,
+                      underline: const SizedBox(),
+                      style: GoogleFonts.plusJakartaSans(
+                        color: AppTheme.neonCyan,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      items: ['Off', '1 Min', '1 Hour', '24 Hours']
+                          .map((val) => DropdownMenuItem(
+                                value: val,
+                                child: Text(val),
+                              ))
+                          .toList(),
+                      onChanged: (newVal) {
+                        if (newVal != null) {
+                          setState(() {
+                            _disappearingTimer = newVal;
+                          });
+                        }
+                      },
                     ),
                   ),
                   Divider(
@@ -176,21 +244,9 @@ class ProfileTab extends StatelessWidget {
                   ),
                   _buildProfileTile(
                     icon: Icons.security_rounded,
-                    iconColor: AppTheme.onlineEmerald,
-                    title: 'Privacy & Security',
-                    subtitle: 'SHA-256 password encryption',
-                  ),
-                  Divider(
-                    height: 1,
-                    indent: 64,
-                    endIndent: 20,
-                    color: Colors.white.withValues(alpha: 0.08),
-                  ),
-                  _buildProfileTile(
-                    icon: Icons.info_outline_rounded,
                     iconColor: const Color(0xFF8B5CF6),
-                    title: 'App Version',
-                    subtitle: 'v1.0.0 (Production Build)',
+                    title: 'End-to-End Encryption',
+                    subtitle: 'SHA-256 protected key room',
                   ),
                   Divider(
                     height: 1,
