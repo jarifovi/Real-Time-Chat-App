@@ -7,6 +7,7 @@ import '../../providers/user_provider.dart';
 import '../../models/chat_room_model.dart';
 import '../../models/user_model.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/gravity_3d_card.dart';
 import '../../utils/date_formatter.dart';
 import '../chat_room_screen.dart';
 
@@ -138,9 +139,7 @@ class _ChatsTabState extends State<ChatsTab> {
                   ),
                 )
               : ListView.builder(
-                  physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
+                  physics: const UltraSmoothGravityScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   itemCount: chatProvider.chats.length,
                   itemBuilder: (context, index) {
@@ -151,126 +150,122 @@ class _ChatsTabState extends State<ChatsTab> {
                       userProvider.users,
                     );
 
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: AppTheme.surfaceColor.withValues(alpha: 0.6),
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.08),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.25),
-                            blurRadius: 16,
-                            offset: const Offset(0, 4),
+                    return Gravity3DCard(
+                      onTap: () {
+                        if (peerUser != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ChatRoomScreen(
+                                chatRoom: chatRoom,
+                                peerUser: peerUser,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                width: 54,
+                                height: 54,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: AppTheme.primaryGradient,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    peerUser != null && peerUser.name.isNotEmpty
+                                        ? peerUser.name[0].toUpperCase()
+                                        : 'C',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  width: 14,
+                                  height: 14,
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.onlineEmerald,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppTheme.darkBackground,
+                                      width: 2.5,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  peerUser?.name ?? 'Chat',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  chatRoom.lastMessage.isNotEmpty
+                                      ? chatRoom.lastMessage
+                                      : 'Tap to send a message...',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    color: chatRoom.lastMessage.isNotEmpty
+                                        ? AppTheme.textSecondary
+                                        : AppTheme.neonCyan,
+                                    fontSize: 14,
+                                    fontWeight: chatRoom.lastMessage.isNotEmpty
+                                        ? FontWeight.w400
+                                        : FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                DateFormatter.formatTimestamp(chatRoom.lastMessageAt),
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: AppTheme.textSecondary,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: const BoxDecoration(
+                                  color: AppTheme.primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 10,
-                        ),
-                        leading: Stack(
-                          children: [
-                            Container(
-                              width: 54,
-                              height: 54,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: AppTheme.primaryGradient,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  peerUser != null && peerUser.name.isNotEmpty
-                                      ? peerUser.name[0].toUpperCase()
-                                      : 'C',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                width: 14,
-                                height: 14,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.onlineEmerald,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: AppTheme.darkBackground,
-                                    width: 2.5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        title: Text(
-                          peerUser?.name ?? 'Chat',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                        subtitle: Text(
-                          chatRoom.lastMessage.isNotEmpty
-                              ? chatRoom.lastMessage
-                              : 'Tap to send a message...',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.plusJakartaSans(
-                            color: chatRoom.lastMessage.isNotEmpty
-                                ? AppTheme.textSecondary
-                                : AppTheme.neonCyan,
-                            fontSize: 14,
-                            fontWeight: chatRoom.lastMessage.isNotEmpty
-                                ? FontWeight.w400
-                                : FontWeight.w600,
-                          ),
-                        ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              DateFormatter.formatTimestamp(chatRoom.lastMessageAt),
-                              style: GoogleFonts.plusJakartaSans(
-                                color: AppTheme.textSecondary,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Container(
-                              width: 8,
-                              height: 8,
-                              decoration: const BoxDecoration(
-                                color: AppTheme.primaryColor,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          if (peerUser != null) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => ChatRoomScreen(
-                                  chatRoom: chatRoom,
-                                  peerUser: peerUser,
-                                ),
-                              ),
-                            );
-                          }
-                        },
                       ),
                     );
                   },

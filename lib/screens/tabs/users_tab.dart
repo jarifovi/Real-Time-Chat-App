@@ -6,6 +6,7 @@ import '../../providers/user_provider.dart';
 import '../../providers/chat_provider.dart';
 import '../../models/user_model.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/gravity_3d_card.dart';
 import '../chat_room_screen.dart';
 
 class UsersTab extends StatefulWidget {
@@ -232,110 +233,97 @@ class _UsersTabState extends State<UsersTab> {
                         ),
                       )
                     : ListView.builder(
-                        physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics(),
-                        ),
+                        physics: const UltraSmoothGravityScrollPhysics(),
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                         itemCount: userProvider.users.length,
                         itemBuilder: (context, index) {
                           final user = userProvider.users[index];
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            decoration: BoxDecoration(
-                              color: AppTheme.surfaceColor.withValues(alpha: 0.6),
-                              borderRadius: BorderRadius.circular(24),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.08),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.25),
-                                  blurRadius: 16,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
+                          return Gravity3DCard(
+                            onTap: () => _onUserSelected(user),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 10,
                             ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 10,
-                              ),
-                              leading: Stack(
-                                children: [
-                                  Container(
-                                    width: 52,
-                                    height: 52,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: AppTheme.avatarGradient,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        user.name.isNotEmpty
-                                            ? user.name[0].toUpperCase()
-                                            : 'U',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 14,
-                                      height: 14,
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.onlineEmerald,
+                            child: Row(
+                              children: [
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: 54,
+                                      height: 54,
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: AppTheme.darkBackground,
-                                          width: 2.5,
+                                        gradient: AppTheme.avatarGradient,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          user.name.isNotEmpty
+                                              ? user.name[0].toUpperCase()
+                                              : 'U',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              title: Text(
-                                user.name,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              subtitle: Text(
-                                user.email,
-                                style: GoogleFonts.plusJakartaSans(
-                                  color: AppTheme.textSecondary,
-                                  fontSize: 13,
-                                ),
-                              ),
-                              trailing: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  gradient: AppTheme.primaryGradient,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppTheme.primaryColor
-                                          .withValues(alpha: 0.4),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 4),
+                                    Positioned(
+                                      right: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        width: 14,
+                                        height: 14,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.onlineEmerald,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: AppTheme.darkBackground,
+                                            width: 2.5,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                child: const Icon(
-                                  Icons.chat_bubble_outline_rounded,
-                                  color: Colors.white,
-                                  size: 18,
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        user.name,
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        user.email,
+                                        style: GoogleFonts.plusJakartaSans(
+                                          color: AppTheme.textSecondary,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              onTap: () => _onUserSelected(user),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    gradient: AppTheme.primaryGradient,
+                                    shape: BoxShape.circle,
+                                    boxShadow: AppTheme.glowingOrbShadows,
+                                  ),
+                                  child: const Icon(
+                                    Icons.chat_bubble_rounded,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },

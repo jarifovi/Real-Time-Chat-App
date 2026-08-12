@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/gravity_3d_card.dart';
+import '../widgets/gravity_3d_orb.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -53,84 +55,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Stack(
         children: [
-          // Dark Midnight Background
+          // 3D Deep Space Background
           Container(color: AppTheme.darkBackground),
 
-          // Ambient Mesh Glow Circle 1 (Violet)
-          Positioned(
-            top: -60,
-            right: -60,
-            child: Container(
-              width: size.width * 0.8,
-              height: size.width * 0.8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.primaryColor.withValues(alpha: 0.25),
-                    blurRadius: 100,
-                    spreadRadius: 40,
-                  ),
-                ],
-              ),
+          // 3D Gravity Floating Orbs
+          const Positioned(
+            top: -40,
+            right: -40,
+            child: Gravity3DOrb(
+              size: 250,
+              gradient: AppTheme.gravityOrbGradient,
+              offset: Offset(0, 0),
+            ),
+          ),
+          const Positioned(
+            bottom: -50,
+            left: -40,
+            child: Gravity3DOrb(
+              size: 230,
+              gradient: AppTheme.primaryGradient,
+              offset: Offset(0, 0),
             ),
           ),
 
-          // Ambient Mesh Glow Circle 2 (Cyan)
-          Positioned(
-            bottom: -60,
-            left: -60,
-            child: Container(
-              width: size.width * 0.7,
-              height: size.width * 0.7,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.neonCyan.withValues(alpha: 0.2),
-                    blurRadius: 100,
-                    spreadRadius: 40,
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Main Scroll Content
+          // Main Scroll View with Ultra Smooth Gravity Physics
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+                physics: const UltraSmoothGravityScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Brand Logo Icon Ring
+                    // 3D Metallic Gravity Logo Ring Icon
                     Container(
-                      width: 84,
-                      height: 84,
+                      width: 90,
+                      height: 90,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: AppTheme.primaryGradient,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.primaryColor.withValues(alpha: 0.5),
-                            blurRadius: 28,
-                            spreadRadius: 4,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
+                        boxShadow: AppTheme.glowingOrbShadows,
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.3),
+                          width: 2,
+                        ),
                       ),
                       child: const Icon(
                         Icons.person_add_alt_1_rounded,
-                        size: 44,
+                        size: 48,
                         color: Colors.white,
                       ),
                     ),
@@ -147,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Join the next-generation chat community',
+                      'Join the 3D Gravity Chat Network',
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 14,
                         color: AppTheme.textSecondary,
@@ -155,30 +131,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 32),
 
-                    // Translucent Dark Glass Card
-                    Container(
+                    // 3D Gravity Card Container
+                    Gravity3DCard(
                       padding: const EdgeInsets.all(28),
-                      decoration: BoxDecoration(
-                        color: AppTheme.surfaceColor.withValues(alpha: 0.75),
-                        borderRadius: BorderRadius.circular(28),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.1),
-                          width: 1.2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.4),
-                            blurRadius: 36,
-                            offset: const Offset(0, 14),
-                          ),
-                        ],
-                      ),
                       child: Form(
                         key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // Name Field
+                            // Full Name
                             TextFormField(
                               controller: _nameController,
                               style: GoogleFonts.plusJakartaSans(color: Colors.white),
@@ -188,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: AppTheme.textSecondary,
                                 ),
                                 prefixIcon: const Icon(
-                                  Icons.person_outline_rounded,
+                                  Icons.badge_rounded,
                                   color: AppTheme.primaryColor,
                                 ),
                               ),
@@ -201,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 18),
 
-                            // Email Field
+                            // Email
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
@@ -212,23 +173,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: AppTheme.textSecondary,
                                 ),
                                 prefixIcon: const Icon(
-                                  Icons.email_outlined,
-                                  color: AppTheme.primaryColor,
+                                  Icons.alternate_email_rounded,
+                                  color: AppTheme.neonCyan,
                                 ),
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
                                   return 'Please enter your email';
                                 }
-                                if (!value.contains('@')) {
-                                  return 'Please enter a valid email';
-                                }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 18),
 
-                            // Password Field
+                            // Password
                             TextFormField(
                               controller: _passwordController,
                               obscureText: _obscurePassword,
@@ -239,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: AppTheme.textSecondary,
                                 ),
                                 prefixIcon: const Icon(
-                                  Icons.lock_outline_rounded,
+                                  Icons.fingerprint_rounded,
                                   color: AppTheme.primaryColor,
                                 ),
                                 suffixIcon: IconButton(
@@ -260,15 +218,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter a password';
                                 }
-                                if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
-                                }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 28),
 
-                            // Sign Up Button
+                            // Submit Button
                             authProvider.isLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(
@@ -276,18 +231,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   )
                                 : Container(
-                                    height: 56,
+                                    height: 58,
                                     decoration: BoxDecoration(
                                       gradient: AppTheme.primaryGradient,
-                                      borderRadius: BorderRadius.circular(16),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: AppTheme.primaryColor
-                                              .withValues(alpha: 0.45),
-                                          blurRadius: 20,
-                                          offset: const Offset(0, 8),
-                                        ),
-                                      ],
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: AppTheme.glowingOrbShadows,
                                     ),
                                     child: ElevatedButton(
                                       onPressed: _submitRegister,
@@ -295,14 +243,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         backgroundColor: Colors.transparent,
                                         shadowColor: Colors.transparent,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius: BorderRadius.circular(20),
                                         ),
                                       ),
                                       child: Text(
                                         'Sign Up',
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w800,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -330,7 +278,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             'Log In',
                             style: GoogleFonts.plusJakartaSans(
                               color: AppTheme.neonCyan,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w800,
                               fontSize: 15,
                             ),
                           ),
