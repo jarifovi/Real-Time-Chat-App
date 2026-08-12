@@ -66,31 +66,46 @@ class _ChatsTabState extends State<ChatsTab> {
       appBar: AppBar(
         title: Row(
           children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                gradient: AppTheme.primaryGradient,
+                shape: BoxShape.circle,
+                boxShadow: AppTheme.glowingOrbShadows,
+              ),
+              child: const Icon(
+                Icons.pets_rounded,
+                size: 20,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 12),
             Text(
-              'Messages',
+              'BAO CHAT',
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 26,
-                fontWeight: FontWeight.w800,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
                 color: Colors.white,
                 letterSpacing: -0.8,
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppTheme.neonCyan.withValues(alpha: 0.15),
+                color: AppTheme.primaryColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: AppTheme.neonCyan.withValues(alpha: 0.4),
+                  color: AppTheme.primaryColor.withValues(alpha: 0.5),
                 ),
               ),
               child: Text(
-                '${chatProvider.chats.length} Threads',
+                'LIVE',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.neonCyan,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.primaryColor,
+                  letterSpacing: 1.0,
                 ),
               ),
             ),

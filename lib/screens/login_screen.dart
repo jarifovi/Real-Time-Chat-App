@@ -55,16 +55,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Deep Space Dark Crimson Background
+          // Midnight Obsidian Dark Background
           Container(color: AppTheme.darkBackground),
 
-          // 3D Crimson & Magenta Floating Orbs
+          // Bamboo Emerald & Sky Blue Glowing 3D Orbs
           const Positioned(
             top: -60,
             left: -50,
             child: Gravity3DOrb(
-              size: 280,
-              gradient: AppTheme.crimsonOrbGradient,
+              size: 290,
+              gradient: AppTheme.bambooOrbGradient,
               offset: Offset(0, 0),
             ),
           ),
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
             bottom: -70,
             right: -60,
             child: Gravity3DOrb(
-              size: 260,
+              size: 270,
               gradient: AppTheme.primaryGradient,
               offset: Offset(0, 0),
             ),
@@ -87,51 +87,101 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Unique 3D Glowing Social Sparkle Pulse Icon
-                    Container(
-                      width: 104,
-                      height: 104,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: AppTheme.primaryGradient,
-                        boxShadow: AppTheme.glowingOrbShadows,
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.35),
-                          width: 2.5,
+                    // BAO CHAT Panda Mascot Badge Container
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          width: 110,
+                          height: 110,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: AppTheme.primaryGradient,
+                            boxShadow: AppTheme.glowingOrbShadows,
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.4),
+                              width: 3.0,
+                            ),
+                          ),
+                          child: Center(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.face_retouching_natural_rounded,
+                                  size: 64,
+                                  color: Colors.white,
+                                ),
+                                Positioned(
+                                  bottom: 6,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
+                                      color: AppTheme.primaryColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.forum_rounded,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.auto_awesome_rounded,
-                          size: 58,
-                          color: Colors.white,
+                        // Paw Print Accent Badge 🐾
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: const BoxDecoration(
+                            color: AppTheme.sunnyAmber,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.pets_rounded,
+                            size: 18,
+                            color: AppTheme.darkBackground,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 22),
 
-                    // VibePulse Brand Name
+                    // BAO CHAT Title
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'BAO CHAT',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 38,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                            letterSpacing: -1.2,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Icon(
+                          Icons.pets_rounded,
+                          size: 26,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
                     Text(
-                      'VibePulse',
+                      'REAL-TIME COMMUNITY',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        letterSpacing: -1.2,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: AppTheme.primaryColor,
+                        letterSpacing: 2.5,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Connect in 3D Crimson Aura',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.neonPinkGlow,
-                      ),
-                    ),
-                    const SizedBox(height: 36),
+                    const SizedBox(height: 34),
 
-                    // 3D Glassmorphic Crimson Card
+                    // 3D Glassmorphic Bamboo Card
                     Gravity3DCard(
                       padding: const EdgeInsets.all(28),
                       child: Form(
@@ -210,7 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 28),
 
-                            // 3D Crimson Hot Pink Button
+                            // 3D Bamboo Emerald Button
                             authProvider.isLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(
@@ -233,13 +283,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                           borderRadius: BorderRadius.circular(22),
                                         ),
                                       ),
-                                      child: Text(
-                                        'Log In',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w800,
-                                          color: Colors.white,
-                                        ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Log In to Bao Chat',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Icon(Icons.pets_rounded, size: 18, color: Colors.white),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -268,7 +325,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                           child: Text(
-                            'Register Now',
+                            'Join Community',
                             style: GoogleFonts.plusJakartaSans(
                               color: AppTheme.primaryColor,
                               fontWeight: FontWeight.w800,

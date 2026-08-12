@@ -56,9 +56,9 @@ class _Gravity3DOrbState extends State<Gravity3DOrb>
               gradient: widget.gradient,
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.45),
-                  blurRadius: 70,
-                  spreadRadius: 25,
+                  color: AppTheme.primaryColor.withValues(alpha: 0.4),
+                  blurRadius: 75,
+                  spreadRadius: 28,
                 ),
               ],
             ),

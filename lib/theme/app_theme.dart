@@ -2,59 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Ultra-Modern Crimson-Pinkish Palette
-  static const Color darkBackground = Color(0xFF0D0714); // Deep Space Crimson Dark
-  static const Color surfaceColor = Color(0xFF1B0E2A);    // Frosted Pinkish-Glass Surface
-  static const Color surfaceLight = Color(0xFF2D1642);    // Elevated Hot Pinkish Surface
-  static const Color surfaceBorder = Color(0x3BFF2E63);   // Neon Rose Rim Light
+  // BAO CHAT Brand Color Palette (Bamboo Emerald & Midnight Obsidian)
+  static const Color darkBackground = Color(0xFF141720); // Midnight Obsidian Dark
+  static const Color surfaceColor = Color(0xFF1F2432);    // Bamboo Obsidian Surface
+  static const Color surfaceLight = Color(0xFF2B3144);    // Elevated Glass Surface
+  static const Color surfaceBorder = Color(0x3B34A853);   // Bamboo Emerald Rim Light
 
-  // Vibrant Reddish-Pinkish Accents
-  static const Color primaryColor = Color(0xFFFF2E63);   // Electric Crimson Rose
-  static const Color primaryAccent = Color(0xFFFF007F);  // Hot Magenta Pink
-  static const Color neonCoral = Color(0xFFFF6B6B);      // Sunset Coral Gold
-  static const Color neonPinkGlow = Color(0xFFFF85A1);   // Glowing Soft Pink
-  static const Color neonCyan = Color(0xFFFF85A1);       // Crimson Rose Accent
+  // Brand Accent Colors
+  static const Color primaryColor = Color(0xFF34A853);   // Bamboo Emerald Green
+  static const Color primaryAccent = Color(0xFF4285F4);  // Vibe Sky Blue
+  static const Color sunnyAmber = Color(0xFFFFBB00);     // Sunny Amber Highlight
+  static const Color clayBlush = Color(0xFFE67E22);      // Clay Blush Warm Accent
+  static const Color neonPinkGlow = Color(0xFF6EE7B7);   // Soft Mint Glow
+  static const Color neonCyan = Color(0xFF34A853);       // Primary Accent Alias
   static const Color onlineEmerald = Color(0xFF10B981);  // Online Emerald Status
 
   // Text Colors
-  static const Color textPrimary = Color(0xFFFFF0F5);    // Crisp Lavender-White
-  static const Color textSecondary = Color(0xFFC0A5CD);  // Muted Rose-Slate
+  static const Color textPrimary = Color(0xFFF8FAFC);    // Crisp Panda White
+  static const Color textSecondary = Color(0xFF94A3B8);  // Muted Slate
 
-  // Multi-Pass Glowing Reddish-Pinkish Gradients
+  // Multi-Pass Glowing Bamboo Gradients
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [Color(0xFFFF2E63), Color(0xFFFF007F), Color(0xFFFF6B6B)],
+    colors: [Color(0xFF34A853), Color(0xFF2E9747), Color(0xFF4285F4)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  static const LinearGradient crimsonOrbGradient = LinearGradient(
-    colors: [Color(0xFFFF2E63), Color(0xFF99004D), Color(0xFFFF007F)],
+  static const LinearGradient bambooOrbGradient = LinearGradient(
+    colors: [Color(0xFF34A853), Color(0xFF1B5E20), Color(0xFF4285F4)],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
 
   static const LinearGradient avatarGradient = LinearGradient(
-    colors: [Color(0xFFFF007F), Color(0xFFFF2E63), Color(0xFFFF6B6B)],
+    colors: [Color(0xFF34A853), Color(0xFF4285F4), Color(0xFFFFBB00)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const LinearGradient sentBubbleGradient = LinearGradient(
-    colors: [Color(0xFFD90429), Color(0xFFFF2E63), Color(0xFFEF233C)],
+    colors: [Color(0xFF2E9747), Color(0xFF34A853), Color(0xFF2E9B56)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  // 3D Glassmorphic Crimson Depth Shadows
+  // 3D Glassmorphic Bamboo Depth Shadows
   static List<BoxShadow> get gravity3dShadows => [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.7),
+          color: Colors.black.withValues(alpha: 0.65),
           offset: const Offset(8, 12),
           blurRadius: 22,
           spreadRadius: 2,
         ),
         BoxShadow(
-          color: const Color(0xFFFF2E63).withValues(alpha: 0.2),
+          color: const Color(0xFF34A853).withValues(alpha: 0.25),
           offset: const Offset(-4, -4),
           blurRadius: 18,
           spreadRadius: 0,
@@ -63,15 +64,15 @@ class AppTheme {
 
   static List<BoxShadow> get glowingOrbShadows => [
         BoxShadow(
-          color: primaryColor.withValues(alpha: 0.6),
+          color: primaryColor.withValues(alpha: 0.55),
           offset: const Offset(0, 8),
-          blurRadius: 30,
-          spreadRadius: 6,
+          blurRadius: 28,
+          spreadRadius: 5,
         ),
         BoxShadow(
-          color: primaryAccent.withValues(alpha: 0.4),
+          color: primaryAccent.withValues(alpha: 0.35),
           offset: const Offset(-6, -6),
-          blurRadius: 22,
+          blurRadius: 20,
           spreadRadius: 2,
         ),
       ];

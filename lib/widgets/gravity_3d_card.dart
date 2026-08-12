@@ -77,11 +77,11 @@ class _Gravity3DCardState extends State<Gravity3DCard> {
               padding: widget.padding ?? const EdgeInsets.all(18),
               decoration: BoxDecoration(
                 color: widget.backgroundColor ??
-                    AppTheme.surfaceColor.withValues(alpha: 0.85),
+                    AppTheme.surfaceColor.withValues(alpha: 0.88),
                 borderRadius: effectiveRadius,
                 border: Border.all(
                   color: _isHovered
-                      ? AppTheme.primaryColor.withValues(alpha: 0.8)
+                      ? AppTheme.primaryColor.withValues(alpha: 0.85)
                       : Colors.white.withValues(alpha: 0.1),
                   width: _isHovered ? 1.8 : 1.0,
                 ),

@@ -62,16 +62,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Deep Space Dark Crimson Background
+          // Midnight Obsidian Dark Background
           Container(color: AppTheme.darkBackground),
 
-          // 3D Crimson & Magenta Floating Orbs
+          // Bamboo Emerald & Sky Blue Floating Orbs
           const Positioned(
             top: -50,
             right: -50,
             child: Gravity3DOrb(
-              size: 270,
-              gradient: AppTheme.crimsonOrbGradient,
+              size: 280,
+              gradient: AppTheme.bambooOrbGradient,
               offset: Offset(0, 0),
             ),
           ),
@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             bottom: -60,
             left: -50,
             child: Gravity3DOrb(
-              size: 250,
+              size: 260,
               gradient: AppTheme.primaryGradient,
               offset: Offset(0, 0),
             ),
@@ -94,10 +94,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Unique 3D Social Pulse Icon
+                    // Panda Mascot Head Container 🐾
                     Container(
-                      width: 96,
-                      height: 96,
+                      width: 100,
+                      height: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: AppTheme.primaryGradient,
@@ -109,16 +109,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       child: const Center(
                         child: Icon(
-                          Icons.favorite_rounded,
-                          size: 52,
+                          Icons.pets_rounded,
+                          size: 54,
                           color: Colors.white,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
 
                     Text(
-                      'Join VibePulse',
+                      'Join BAO CHAT',
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 34,
                         fontWeight: FontWeight.w900,
@@ -128,16 +128,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Experience Next-Gen Crimson Messaging',
+                      'Real-Time Community & Playful Vibes 🌿',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.neonPinkGlow,
+                        color: AppTheme.primaryColor,
                       ),
                     ),
                     const SizedBox(height: 32),
 
-                    // 3D Glassmorphic Crimson Card Container
+                    // 3D Glassmorphic Bamboo Card Container
                     Gravity3DCard(
                       padding: const EdgeInsets.all(28),
                       child: Form(
@@ -168,13 +168,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 18),
 
-                            // Unique Username Handle
+                            // Username Handle
                             TextFormField(
                               controller: _usernameController,
                               style: GoogleFonts.plusJakartaSans(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'Username (@handle)',
-                                hintText: 'e.g. alex_vibe',
+                                hintText: 'e.g. panpan_wave',
                                 hintStyle: GoogleFonts.plusJakartaSans(
                                   color: AppTheme.textSecondary.withValues(alpha: 0.5),
                                   fontSize: 14,
@@ -235,7 +235,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.fingerprint_rounded,
-                                  color: AppTheme.neonCoral,
+                                  color: AppTheme.sunnyAmber,
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -283,13 +283,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           borderRadius: BorderRadius.circular(22),
                                         ),
                                       ),
-                                      child: Text(
-                                        'Create Account',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w800,
-                                          color: Colors.white,
-                                        ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Create Account',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w800,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Icon(Icons.pets_rounded, size: 18, color: Colors.white),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -304,7 +311,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Already have an account? ',
+                          'Already in the community? ',
                           style: GoogleFonts.plusJakartaSans(
                             color: AppTheme.textSecondary,
                           ),
